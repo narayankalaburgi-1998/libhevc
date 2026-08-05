@@ -61,15 +61,21 @@
 #include <pthread.h>
 #include <errno.h>
 #include <sys/time.h>
+#ifndef _WIN32
 #include <sys/resource.h>
+#else
+#include <windows.h>
+#endif
 
 #include <unistd.h>
 #include <math.h>
 #include <sched.h> /*for CPU_SET, etc.. */
+#ifndef _WIN32
 #ifndef DARWIN
 #include<linux/unistd.h>
 #endif
 #include <sys/syscall.h>
+#endif
 
 /* User include files */
 #include "cast_types.h"
@@ -710,7 +716,9 @@ void osal_print_last_error(IN const STRWORD8 *string)
 
 WORD32 osal_get_current_tid(void)
 {
-#ifdef DARWIN
+#ifdef _WIN32
+    return GetCurrentThreadId();
+#elif defined(DARWIN)
     uint64_t tid;
     pthread_threadid_np(NULL, &tid);
     return tid;

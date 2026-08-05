@@ -47,8 +47,12 @@ function(libhevc_add_definitions)
     add_definitions(-DARMV7 -DDEFAULT_ARCH=D_ARCH_ARM_A9Q -DENABLE_NEON
                     -DDISABLE_NEONINTR)
   else()
-    add_definitions(-DX86 -DX86_LINUX=1 -DDISABLE_AVX2
-                    -DDEFAULT_ARCH=D_ARCH_X86_SSE42)
+    add_definitions(-DX86 -DDISABLE_AVX2 -DDEFAULT_ARCH=D_ARCH_X86_SSE42)
+    if("${SYSTEM_NAME}" STREQUAL "Windows")
+        add_definitions(-DX86_MINGW=1)
+    else()
+        add_definitions(-DX86_LINUX=1)
+    endif()
   endif()
 endfunction()
 
