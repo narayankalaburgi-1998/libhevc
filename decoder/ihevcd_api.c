@@ -2409,9 +2409,7 @@ WORD32 ihevcd_create(iv_obj_t *ps_codec_obj,
         return IV_FAIL;
     }
     ps_codec = (codec_t *)ps_codec_obj->pv_codec_handle;
-    if (ps_create_ip->u4_enable_yuv_formats == 0) {
-        ps_create_ip->u4_enable_yuv_formats = 1 << CHROMA_FMT_IDC_YUV420;
-    }
+    ps_create_ip->u4_enable_yuv_formats = (1 << CHROMA_FMT_IDC_YUV420) | (1 << CHROMA_FMT_IDC_YUV444) | (1 << CHROMA_FMT_IDC_YUV422) | (1 << CHROMA_FMT_IDC_MONOCHROME);
     ps_codec->u4_enable_yuv_formats = ps_create_ip->u4_enable_yuv_formats;
     ret = ihevcd_init(ps_codec);
 

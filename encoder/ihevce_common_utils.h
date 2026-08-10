@@ -200,7 +200,12 @@ static INLINE UWORD32 ihevce_num_ones_generic(UWORD32 bitfield)
 
 static INLINE UWORD32 ihevce_num_ones_popcnt(UWORD32 bitfield)
 {
+    #ifdef _MSC_VER
+#include <intrin.h>
+    return __popcnt(bitfield);
+#else
     return __builtin_popcount(bitfield);
+#endif
 }
 
 WORD32 ihevce_compute_area_of_valid_cus_in_ctb(cur_ctb_cu_tree_t *ps_cu_tree);

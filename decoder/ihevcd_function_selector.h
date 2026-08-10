@@ -193,6 +193,7 @@ typedef struct
     ihevc_hbd_intra_pred_luma_ref_substitution_ft   *pf_hbd_ip_luma_ref_sub;
     ihevc_hbd_intra_pred_ref_filtering_ft           *pf_hbd_ip_ref_filt;
     ihevc_hbd_intra_pred_chroma_ref_substitution_ft *pf_hbd_ip_chroma_ref_sub;
+    ihevc_hbd_intra_pred_chroma_ref_filtering_ft    *pf_hbd_ip_chroma_ref_filt;
     void    **ppv_ihevcd_hbd_intra_pred_luma;
     void    **ppv_ihevcd_hbd_intra_pred_chroma;
 

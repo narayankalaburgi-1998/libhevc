@@ -1315,12 +1315,16 @@ WORD32 ihevcd_iquant_itrans_recon_ctb(process_ctxt_t *ps_proc)
                     else
                     {
                         chroma_qp_idx = CLIP3(chroma_qp_idx, (-i4_qp_bd_offset_uv), 57);
-                        if (chroma_qp_idx < 30) {
+                        if (CHROMA_FMT_IDC_YUV444 == ps_sps->i1_chroma_format_idc) {
                             i4_qp_u = chroma_qp_idx;
-                        } else if (chroma_qp_idx > 43) {
-                            i4_qp_u = chroma_qp_idx - 6;
                         } else {
-                            i4_qp_u = gai2_ihevcd_chroma_qp_420[chroma_qp_idx];
+                            if (chroma_qp_idx < 30) {
+                                i4_qp_u = chroma_qp_idx;
+                            } else if (chroma_qp_idx > 43) {
+                                i4_qp_u = chroma_qp_idx - 6;
+                            } else {
+                                i4_qp_u = pi2_ihevcd_chroma_qp[chroma_qp_idx];
+                            }
                         }
                         i4_qp_u += i4_qp_bd_offset_uv;
                         qp_div = i4_qp_u / 6;
@@ -1347,12 +1351,16 @@ WORD32 ihevcd_iquant_itrans_recon_ctb(process_ctxt_t *ps_proc)
                     else
                     {
                         chroma_qp_idx = CLIP3(chroma_qp_idx, (-i4_qp_bd_offset_uv), 57);
-                        if (chroma_qp_idx < 30) {
+                        if (CHROMA_FMT_IDC_YUV444 == ps_sps->i1_chroma_format_idc) {
                             i4_qp_v = chroma_qp_idx;
-                        } else if (chroma_qp_idx > 43) {
-                            i4_qp_v = chroma_qp_idx - 6;
                         } else {
-                            i4_qp_v = gai2_ihevcd_chroma_qp_420[chroma_qp_idx];
+                            if (chroma_qp_idx < 30) {
+                                i4_qp_v = chroma_qp_idx;
+                            } else if (chroma_qp_idx > 43) {
+                                i4_qp_v = chroma_qp_idx - 6;
+                            } else {
+                                i4_qp_v = pi2_ihevcd_chroma_qp[chroma_qp_idx];
+                            }
                         }
                         i4_qp_v += i4_qp_bd_offset_uv;
                         qp_div_v = i4_qp_v / 6;
@@ -1480,6 +1488,14 @@ WORD32 ihevcd_iquant_itrans_recon_ctb(process_ctxt_t *ps_proc)
                 /***************************************************************/
                 if(intra_flag) /* Intra */
                 {
+                    if (c_idx == 1) {
+                        int abs_x = tu_x + ps_proc->i4_ctb_x * ctb_size;
+                        int abs_y = tu_y + ps_proc->i4_ctb_y * ctb_size;
+                        if (abs_x >= 112 && abs_x <= 128 && abs_y >= 32 && abs_y <= 64) {
+                            printf("U plane: X=%d, Y=%d, size=%d, luma_mode=%d, chroma_mode=%d\n", abs_x, abs_y, trans_size, u1_luma_pred_mode, u1_chroma_pred_mode);
+                            fflush(stdout);
+                        }
+                    }
                     WORD32 pixel_size = (c_idx == 0) ? i4_pixel_size_y : i4_pixel_size_uv;
                     /* While (MAX_TU_SIZE * 2 * 2) + 1 is the actaul size needed,
                        au1_ref_sub_out size is kept as multiple of 8,
@@ -1575,7 +1591,12 @@ WORD32 ihevcd_iquant_itrans_recon_ctb(process_ctxt_t *ps_proc)
                         /* call reference filtering */
                         ps_codec->s_func_selector.pf_hbd_ip_ref_filt((UWORD16 *)pu1_ref_sub_out, trans_size,
                                         (UWORD16 *)pu1_ref_sub_out, u1_luma_pred_mode,
+#ifdef ENABLE_MAIN_REXT_PROFILE
+                                        (ps_sps->i1_intra_smoothing_disabled_flag << 3
+                                                        | ps_sps->i1_strong_intra_smoothing_enable_flag),
+#else
                                         ps_sps->i1_strong_intra_smoothing_enable_flag,
+#endif
                                         (UWORD8)i4_bit_depth_luma);
                     }
 
@@ -1719,7 +1740,22 @@ WORD32 ihevcd_iquant_itrans_recon_ctb(process_ctxt_t *ps_proc)
                         ps_codec->s_func_selector.pf_hbd_ip_chroma_ref_sub((UWORD16 *)pu1_top_left,
                                         (UWORD16 *)pu1_top, (UWORD16 *)pu1_left, ps_cb_tu->pred_strd, trans_size,
                                         chroma_nbr_flags, (UWORD16 *)pu1_ref_sub_out, 1,
+                                        ps_sps->i1_chroma_format_idc,
                                         (UWORD8) i4_bit_depth_chroma);
+
+#ifdef ENABLE_MAIN_REXT_PROFILE
+                        /* call reference filtering */
+                        if(ps_sps->i1_chroma_format_idc == CHROMA_FMT_IDC_YUV444)
+                        {
+                            ps_codec->s_func_selector.pf_hbd_ip_chroma_ref_filt(
+                                            (UWORD16 *)pu1_ref_sub_out,
+                                            trans_size,
+                                            (UWORD16 *)pu1_ref_sub_out,
+                                            u1_chroma_pred_mode,
+                                            (ps_sps->i1_intra_smoothing_disabled_flag << 3
+                                                            | ps_sps->i1_strong_intra_smoothing_enable_flag));
+                        }
+#endif
 
                         /* use the look up to get the function idx */
                         chroma_pred_func_idx = g_i4_ip_funcs[u1_chroma_pred_mode];

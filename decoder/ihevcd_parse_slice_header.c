@@ -253,7 +253,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
     UEV_PARSE("pic_parameter_set_id", pps_id, ps_bitstrm);
     if(pps_id < 0 || pps_id > MAX_PPS_CNT - 2)
     {
-        return IHEVCD_INVALID_PARAMETER;
+        return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
     }
 
     /* Get the current PPS structure */
@@ -265,7 +265,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
         {
             ps_pps_ref++;
             if((ps_pps_ref - ps_codec->ps_pps_base >= MAX_PPS_CNT - 1))
-                return IHEVCD_INVALID_HEADER;
+                return (printf("INVALID_HEADER at %d\n", __LINE__), IHEVCD_INVALID_HEADER);
         }
 
         ihevcd_copy_pps(ps_codec, pps_id, ps_pps_ref->i1_pps_id);
@@ -390,7 +390,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
         UEV_PARSE("slice_type", value, ps_bitstrm);
         if(value > 2)
         {
-            return IHEVCD_INVALID_PARAMETER;
+            return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
         }
         ps_slice_hdr->i1_slice_type = value;
 
@@ -442,7 +442,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
                     numbits = 32 - CLZ(ps_sps->i1_num_short_term_ref_pic_sets - 1);
                     BITS_PARSE("short_term_ref_pic_set_idx", value, ps_bitstrm, numbits);
                     if (value >= ps_sps->i1_num_short_term_ref_pic_sets) {
-                        return IHEVCD_INVALID_PARAMETER;
+                        return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
                     }
                     ps_slice_hdr->i1_short_term_ref_pic_set_idx = value;
                 }
@@ -476,7 +476,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
                     UEV_PARSE("num_long_term_sps", value, ps_bitstrm);
                     if(value > ps_sps->i1_num_long_term_ref_pics_sps)
                     {
-                        return IHEVCD_INVALID_PARAMETER;
+                        return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
                     }
                     ps_slice_hdr->i1_num_long_term_sps = value;
                 }
@@ -484,7 +484,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
                 if(((ULWORD64)value + ps_slice_hdr->i1_num_long_term_sps + num_neg_pics +
                     num_pos_pics) > (MAX_DPB_SIZE - 1))
                 {
-                    return IHEVCD_INVALID_PARAMETER;
+                    return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
                 }
                 ps_slice_hdr->i1_num_long_term_pics = value;
 
@@ -500,7 +500,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
                             BITS_PARSE("lt_idx_sps[ i ]", value, ps_bitstrm, num_bits);
                             if(value >= ps_sps->i1_num_long_term_ref_pics_sps)
                             {
-                                return IHEVCD_INVALID_PARAMETER;
+                                return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
                             }
                         }
                         else
@@ -595,7 +595,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
                 UEV_PARSE("num_ref_idx_l0_active_minus1", value, ps_bitstrm);
                 if(value > MAX_DPB_SIZE - 2)
                 {
-                    return IHEVCD_INVALID_PARAMETER;
+                    return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
                 }
                 ps_slice_hdr->i1_num_ref_idx_l0_active = value + 1;
 
@@ -604,7 +604,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
                     UEV_PARSE("num_ref_idx_l1_active_minus1", value, ps_bitstrm);
                     if(value > MAX_DPB_SIZE - 2)
                     {
-                        return IHEVCD_INVALID_PARAMETER;
+                        return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
                     }
                     ps_slice_hdr->i1_num_ref_idx_l1_active = value + 1;
                 }
@@ -668,14 +668,14 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
                     {
                         if(value >= ps_slice_hdr->i1_num_ref_idx_l0_active)
                         {
-                            return IHEVCD_INVALID_PARAMETER;
+                            return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
                         }
                     }
                     if(BSLICE == ps_slice_hdr->i1_slice_type && !ps_slice_hdr->i1_collocated_from_l0_flag)
                     {
                         if(value >= ps_slice_hdr->i1_num_ref_idx_l1_active)
                         {
-                            return IHEVCD_INVALID_PARAMETER;
+                            return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
                         }
                     }
                     ps_slice_hdr->i1_collocated_ref_idx = value;
@@ -691,7 +691,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
             UEV_PARSE("five_minus_max_num_merge_cand", value, ps_bitstrm);
             if(value > 4)
             {
-                return IHEVCD_INVALID_PARAMETER;
+                return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
             }
             ps_slice_hdr->i1_max_num_merge_cand = 5 - value;
 
@@ -700,7 +700,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
         if((i4_value < (MIN_HEVC_QP - ps_pps->i1_pic_init_qp)) ||
            (i4_value > (MAX_HEVC_QP - ps_pps->i1_pic_init_qp)))
         {
-            return IHEVCD_INVALID_PARAMETER;
+            return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
         }
         ps_slice_hdr->i1_slice_qp_delta = i4_value;
 
@@ -709,14 +709,14 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
             SEV_PARSE("slice_cb_qp_offset", i4_value, ps_bitstrm);
             if(i4_value < -12 || i4_value > 12)
             {
-                return IHEVCD_INVALID_PARAMETER;
+                return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
             }
             ps_slice_hdr->i1_slice_cb_qp_offset = i4_value;
 
             SEV_PARSE("slice_cr_qp_offset", i4_value, ps_bitstrm);
             if(i4_value < -12 || i4_value > 12)
             {
-                return IHEVCD_INVALID_PARAMETER;
+                return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
             }
             ps_slice_hdr->i1_slice_cr_qp_offset = i4_value;
 
@@ -754,14 +754,14 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
                     SEV_PARSE("beta_offset_div2", i4_value, ps_bitstrm);
                     if(i4_value < -6 || i4_value > 6)
                     {
-                        return IHEVCD_INVALID_PARAMETER;
+                        return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
                     }
                     ps_slice_hdr->i1_beta_offset_div2 = i4_value;
 
                     SEV_PARSE("tc_offset_div2", i4_value, ps_bitstrm);
                     if(i4_value < -6 || i4_value > 6)
                     {
-                        return IHEVCD_INVALID_PARAMETER;
+                        return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
                     }
                     ps_slice_hdr->i1_tc_offset_div2 = i4_value;
 
@@ -914,7 +914,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
 
             if(ps_slice_hdr->i4_num_entry_point_offsets < 0 || ps_slice_hdr->i4_num_entry_point_offsets > max_num_entry_point_offsets)
             {
-                return IHEVCD_INVALID_PARAMETER;
+                return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
             }
         }
 
@@ -923,7 +923,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
             UEV_PARSE("offset_len_minus1", value, ps_bitstrm);
             if(value > 31)
             {
-                return IHEVCD_INVALID_PARAMETER;
+                return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
             }
             ps_slice_hdr->i1_offset_len = value + 1;
 
@@ -943,7 +943,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
         UEV_PARSE("slice_header_extension_length", value, ps_bitstrm);
         if(value > 256)
         {
-            return IHEVCD_INVALID_PARAMETER;
+            return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
         }
         ps_slice_hdr->i2_slice_header_extension_length = value;
 
@@ -958,7 +958,7 @@ IHEVCD_ERROR_T ihevcd_parse_slice_header(codec_t *ps_codec,
     ihevcd_bits_flush_to_byte_boundary(ps_bitstrm);
 
     if((UWORD8 *)ps_bitstrm->pu4_buf > ps_bitstrm->pu1_buf_max)
-        return IHEVCD_INVALID_PARAMETER;
+        return (printf("INVALID_PARAMETER at %d\n", __LINE__), IHEVCD_INVALID_PARAMETER);
 
     {
         dpb_mgr_t *ps_dpb_mgr = (dpb_mgr_t *)ps_codec->pv_dpb_mgr;

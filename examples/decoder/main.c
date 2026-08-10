@@ -2447,9 +2447,7 @@ int main(WORD32 argc, CHAR *argv[])
 
             if(ret != IV_SUCCESS)
             {
-                sprintf(ac_error_str, "\nError in header decode %x",
-                        ps_video_decode_op->u4_error_code);
-                // codec_exit(ac_error_str);
+                printf("\nError in header decode %x\n", ps_video_decode_op->u4_error_code);
             }
 
             u4_num_bytes_dec = ps_video_decode_op->u4_num_bytes_consumed;
@@ -2991,6 +2989,10 @@ int main(WORD32 argc, CHAR *argv[])
             ret = ivd_cxa_api_function((iv_obj_t *)codec_obj, (void *)&s_hevcd_video_decode_ip,
                                        (void *)&s_hevcd_video_decode_op);
 
+            printf("Decode API returned: %d, Error code: 0x%x, Output present: %d, Bytes consumed: %d\n",
+                   ret, s_hevcd_video_decode_op.s_ivd_video_decode_op_t.u4_error_code,
+                   s_hevcd_video_decode_op.s_ivd_video_decode_op_t.u4_output_present,
+                   s_hevcd_video_decode_op.s_ivd_video_decode_op_t.u4_num_bytes_consumed);
 
             GETTIME(&s_end_timer);
             ELAPSEDTIME(s_start_timer, s_end_timer, s_elapsed_time, frequency);

@@ -552,6 +552,25 @@ void ihevc_hbd_intra_pred_ref_filtering(UWORD16 * pu2_src,
     WORD32 abs_cond_left_flag = 0;
     WORD32 abs_cond_top_flag = 0;
     WORD32 dc_val = 1 << (bit_depth - 5);
+#ifdef ENABLE_MAIN_REXT_PROFILE
+    /* The 3rd bit of strong_intra_smoothing_enable_flag contains intra_smoothing_disabled_flag */
+    WORD32 intra_smoothing_disabled_flag = (strong_intra_smoothing_enable_flag >> 3) & 1;
+    strong_intra_smoothing_enable_flag = strong_intra_smoothing_enable_flag & 1;
+
+    if(intra_smoothing_disabled_flag)
+    {
+        if(pu2_src == pu2_dst)
+        {
+            return;
+        }
+        else
+        {
+            for(i = 0; i < (four_nt + 1); i++)
+                pu2_dst[i] = pu2_src[i];
+            return;
+        }
+    }
+#endif
 
     filter_flag = gau1_intra_pred_ref_filter[mode] & (1 << (CTZ(nt) - 2));
     if(0 == filter_flag)

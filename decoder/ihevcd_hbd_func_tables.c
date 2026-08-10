@@ -67,7 +67,8 @@ const pf_hbd_itrans_recon gafp_ihevcd_hbd_itrans_recon[] =
     (pf_hbd_itrans_recon)&ihevc_hbd_itrans_recon_32x32,
     (pf_hbd_itrans_recon)&ihevc_hbd_chroma_itrans_recon_4x4,
     (pf_hbd_itrans_recon)&ihevc_hbd_chroma_itrans_recon_8x8,
-    (pf_hbd_itrans_recon)&ihevc_hbd_chroma_itrans_recon_16x16
+    (pf_hbd_itrans_recon)&ihevc_hbd_chroma_itrans_recon_16x16,
+    (pf_hbd_itrans_recon)&ihevc_hbd_chroma_itrans_recon_32x32
 };
 
 const pf_hbd_recon gafp_ihevcd_hbd_recon[] =
@@ -79,7 +80,8 @@ const pf_hbd_recon gafp_ihevcd_hbd_recon[] =
     (pf_hbd_recon)&ihevc_hbd_recon_32x32,
     (pf_hbd_recon)&ihevc_hbd_chroma_recon_4x4,
     (pf_hbd_recon)&ihevc_hbd_chroma_recon_8x8,
-    (pf_hbd_recon)&ihevc_hbd_chroma_recon_16x16
+    (pf_hbd_recon)&ihevc_hbd_chroma_recon_16x16,
+    (pf_hbd_recon)&ihevc_hbd_chroma_recon_32x32
 };
 
 const pf_hbd_itrans_recon_dc gafp_ihevcd_hbd_itrans_recon_dc[] =

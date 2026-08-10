@@ -69,6 +69,7 @@ list(
   "${HEVC_ROOT}/common/ihevc_hbd_chroma_iquant_recon.c"
   "${HEVC_ROOT}/common/ihevc_hbd_chroma_itrans_recon.c"
   "${HEVC_ROOT}/common/ihevc_hbd_chroma_itrans_recon_16x16.c"
+  "${HEVC_ROOT}/common/ihevc_hbd_chroma_itrans_recon_32x32.c"
   "${HEVC_ROOT}/common/ihevc_hbd_chroma_itrans_recon_8x8.c"
   "${HEVC_ROOT}/common/ihevc_hbd_chroma_recon.c"
   "${HEVC_ROOT}/common/ihevc_hbd_deblk_edge_filter.c"
