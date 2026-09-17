@@ -3092,6 +3092,9 @@ void ihevc_inter_pred_luma_vert_w16inp_ssse3(WORD16 *pi2_src,
 * @param[in] wd
 *  integer width of the array
 *
+* @param[in] bit_depth
+*  bit depth of the pixels
+*
 * @returns
 *
 * @remarks
@@ -3105,11 +3108,14 @@ void ihevc_inter_pred_luma_vert_w16inp_w16out_ssse3(WORD16 *pi2_src,
                                                     WORD32 dst_strd,
                                                     WORD8 *pi1_coeff,
                                                     WORD32 ht,
-                                                    WORD32 wd)
+                                                    WORD32 wd,
+                                                    UWORD8 bit_depth)
 {
     WORD32 row, col;
     WORD16 *pi2_src_copy;
     WORD16 *pi2_dst_copy;
+
+    UNUSED(bit_depth);
     __m128i coeff0_1_8x16b, coeff2_3_8x16b, coeff4_5_8x16b, coeff6_7_8x16b;
     __m128i s0_8x16b, s1_8x16b, s2_8x16b, s3_8x16b, s4_8x16b, s5_8x16b, s6_8x16b, s8_8x16b, s9_8x16b;
     __m128i s2_0_16x8b, s2_1_16x8b, s2_2_16x8b, s2_3_16x8b, s2_4_16x8b, s2_5_16x8b, s2_6_16x8b, s2_7_16x8b, s2_8_16x8b, s2_9_16x8b, s2_10_16x8b;
@@ -3192,10 +3198,10 @@ void ihevc_inter_pred_luma_vert_w16inp_w16out_ssse3(WORD16 *pi2_src,
         s5_8x16b = _mm_add_epi32(s2_8x16b, s3_8x16b);
         s6_8x16b = _mm_add_epi32(s4_8x16b, s5_8x16b);
 
-        /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> SHIFT_14_MINUS_BIT_DEPTH */
-        s8_8x16b = _mm_srai_epi32(s6_8x16b,  SHIFT_14_MINUS_BIT_DEPTH);
+        /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> FILTER_PREC */
+        s8_8x16b = _mm_srai_epi32(s6_8x16b,  FILTER_PREC);
 
-        /* (i4_tmp >> SHIFT_14_MINUS_BIT_DEPTH) + OFFSET_14_MINUS_BIT_DEPTH) */
+        /* (i4_tmp >> FILTER_PREC) + OFFSET_14_MINUS_BIT_DEPTH) */
         s9_8x16b = _mm_sub_epi32(s8_8x16b, offset_8x16b);
 
         s8_8x16b = _mm_packs_epi32(s9_8x16b, zero_8x16b);
@@ -3223,10 +3229,10 @@ void ihevc_inter_pred_luma_vert_w16inp_w16out_ssse3(WORD16 *pi2_src,
         s25_8x16b = _mm_add_epi32(s22_8x16b, s23_8x16b);
         s26_8x16b = _mm_add_epi32(s24_8x16b, s25_8x16b);
 
-        /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> SHIFT_14_MINUS_BIT_DEPTH */
-        s28_8x16b = _mm_srai_epi32(s26_8x16b,  SHIFT_14_MINUS_BIT_DEPTH);
+        /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> FILTER_PREC */
+        s28_8x16b = _mm_srai_epi32(s26_8x16b,  FILTER_PREC);
 
-        /* (i4_tmp >> SHIFT_14_MINUS_BIT_DEPTH) + OFFSET_14_MINUS_BIT_DEPTH) */
+        /* (i4_tmp >> FILTER_PREC) + OFFSET_14_MINUS_BIT_DEPTH) */
         s29_8x16b = _mm_sub_epi32(s28_8x16b, offset_8x16b);
 
         s28_8x16b = _mm_packs_epi32(s29_8x16b, zero_8x16b);
@@ -3257,10 +3263,10 @@ void ihevc_inter_pred_luma_vert_w16inp_w16out_ssse3(WORD16 *pi2_src,
         s15_8x16b = _mm_add_epi32(s12_8x16b, s13_8x16b);
         s16_8x16b = _mm_add_epi32(s14_8x16b, s15_8x16b);
 
-        /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> SHIFT_14_MINUS_BIT_DEPTH */
-        s18_8x16b = _mm_srai_epi32(s16_8x16b,  SHIFT_14_MINUS_BIT_DEPTH);
+        /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> FILTER_PREC */
+        s18_8x16b = _mm_srai_epi32(s16_8x16b,  FILTER_PREC);
 
-        /* (i4_tmp >> SHIFT_14_MINUS_BIT_DEPTH) + OFFSET_14_MINUS_BIT_DEPTH) */
+        /* (i4_tmp >> FILTER_PREC) + OFFSET_14_MINUS_BIT_DEPTH) */
         s19_8x16b = _mm_sub_epi32(s18_8x16b, offset_8x16b);
 
         s18_8x16b = _mm_packs_epi32(s19_8x16b, zero_8x16b);
@@ -3286,11 +3292,10 @@ void ihevc_inter_pred_luma_vert_w16inp_w16out_ssse3(WORD16 *pi2_src,
         s35_8x16b = _mm_add_epi32(s32_8x16b, s33_8x16b);
         s36_8x16b = _mm_add_epi32(s34_8x16b, s35_8x16b);
 
-        /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> SHIFT_14_MINUS_BIT_DEPTH */
-        s38_8x16b = _mm_srai_epi32(s36_8x16b,  SHIFT_14_MINUS_BIT_DEPTH);
+        /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> FILTER_PREC */
+        s38_8x16b = _mm_srai_epi32(s36_8x16b,  FILTER_PREC);
 
-
-        /* (i4_tmp >> SHIFT_14_MINUS_BIT_DEPTH) + OFFSET_14_MINUS_BIT_DEPTH) */
+        /* (i4_tmp >> FILTER_PREC) + OFFSET_14_MINUS_BIT_DEPTH) */
         s39_8x16b = _mm_sub_epi32(s38_8x16b, offset_8x16b);
 
         s38_8x16b = _mm_packs_epi32(s39_8x16b, zero_8x16b);
@@ -3327,10 +3332,10 @@ void ihevc_inter_pred_luma_vert_w16inp_w16out_ssse3(WORD16 *pi2_src,
             s5_8x16b = _mm_add_epi32(s2_8x16b, s3_8x16b);
             s6_8x16b = _mm_add_epi32(s4_8x16b, s5_8x16b);
 
-            /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> SHIFT_14_MINUS_BIT_DEPTH */
-            s8_8x16b = _mm_srai_epi32(s6_8x16b,  SHIFT_14_MINUS_BIT_DEPTH);
+            /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> FILTER_PREC */
+            s8_8x16b = _mm_srai_epi32(s6_8x16b,  FILTER_PREC);
 
-            /* (i4_tmp >> SHIFT_14_MINUS_BIT_DEPTH) + OFFSET_14_MINUS_BIT_DEPTH) */
+            /* (i4_tmp >> FILTER_PREC) + OFFSET_14_MINUS_BIT_DEPTH) */
             s9_8x16b = _mm_sub_epi32(s8_8x16b, offset_8x16b);
 
             s8_8x16b = _mm_packs_epi32(s9_8x16b, zero_8x16b);
@@ -3359,10 +3364,10 @@ void ihevc_inter_pred_luma_vert_w16inp_w16out_ssse3(WORD16 *pi2_src,
             s25_8x16b = _mm_add_epi32(s22_8x16b, s23_8x16b);
             s26_8x16b = _mm_add_epi32(s24_8x16b, s25_8x16b);
 
-            /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> SHIFT_14_MINUS_BIT_DEPTH */
-            s28_8x16b = _mm_srai_epi32(s26_8x16b,  SHIFT_14_MINUS_BIT_DEPTH);
+            /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> FILTER_PREC */
+            s28_8x16b = _mm_srai_epi32(s26_8x16b,  FILTER_PREC);
 
-            /* (i4_tmp >> SHIFT_14_MINUS_BIT_DEPTH) + OFFSET_14_MINUS_BIT_DEPTH) */
+            /* (i4_tmp >> FILTER_PREC) + OFFSET_14_MINUS_BIT_DEPTH) */
             s29_8x16b = _mm_sub_epi32(s28_8x16b, offset_8x16b);
 
             s28_8x16b = _mm_packs_epi32(s29_8x16b, zero_8x16b);
@@ -3385,10 +3390,10 @@ void ihevc_inter_pred_luma_vert_w16inp_w16out_ssse3(WORD16 *pi2_src,
             s15_8x16b = _mm_add_epi32(s12_8x16b, s13_8x16b);
             s16_8x16b = _mm_add_epi32(s14_8x16b, s15_8x16b);
 
-            /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> SHIFT_14_MINUS_BIT_DEPTH */
-            s18_8x16b = _mm_srai_epi32(s16_8x16b,  SHIFT_14_MINUS_BIT_DEPTH);
+            /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> FILTER_PREC */
+            s18_8x16b = _mm_srai_epi32(s16_8x16b,  FILTER_PREC);
 
-            /* (i4_tmp >> SHIFT_14_MINUS_BIT_DEPTH) + OFFSET_14_MINUS_BIT_DEPTH) */
+            /* (i4_tmp >> FILTER_PREC) + OFFSET_14_MINUS_BIT_DEPTH) */
             s19_8x16b = _mm_sub_epi32(s18_8x16b, offset_8x16b);
 
             s18_8x16b = _mm_packs_epi32(s19_8x16b, zero_8x16b);
@@ -3415,10 +3420,10 @@ void ihevc_inter_pred_luma_vert_w16inp_w16out_ssse3(WORD16 *pi2_src,
             s35_8x16b = _mm_add_epi32(s32_8x16b, s33_8x16b);
             s36_8x16b = _mm_add_epi32(s34_8x16b, s35_8x16b);
 
-            /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> SHIFT_14_MINUS_BIT_DEPTH */
-            s38_8x16b = _mm_srai_epi32(s36_8x16b,  SHIFT_14_MINUS_BIT_DEPTH);
+            /*(i2_tmp + OFFSET_14_MINUS_BIT_DEPTH) >> FILTER_PREC */
+            s38_8x16b = _mm_srai_epi32(s36_8x16b,  FILTER_PREC);
 
-            /* (i4_tmp >> SHIFT_14_MINUS_BIT_DEPTH) + OFFSET_14_MINUS_BIT_DEPTH) */
+            /* (i4_tmp >> FILTER_PREC) + OFFSET_14_MINUS_BIT_DEPTH) */
             s39_8x16b = _mm_sub_epi32(s38_8x16b, offset_8x16b);
 
             s38_8x16b = _mm_packs_epi32(s39_8x16b, zero_8x16b);

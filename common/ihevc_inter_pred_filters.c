@@ -604,6 +604,9 @@ void ihevc_inter_pred_luma_vert_w16inp(WORD16 *pi2_src,
 * @param[in] wd
 *  integer width of the array
 *
+* @param[in] bit_depth
+*  bit depth of the pixels
+*
 * @returns
 *
 * @remarks
@@ -619,10 +622,13 @@ void ihevc_inter_pred_luma_vert_w16inp_w16out(WORD16 *pi2_src,
                                               WORD32 dst_strd,
                                               WORD8 *pi1_coeff,
                                               WORD32 ht,
-                                              WORD32 wd)
+                                              WORD32 wd,
+                                              UWORD8 bit_depth)
 {
     WORD32 row, col, i;
     WORD32 i4_tmp;
+
+    UNUSED(bit_depth);
 
     for(row = 0; row < ht; row++)
     {
@@ -632,7 +638,7 @@ void ihevc_inter_pred_luma_vert_w16inp_w16out(WORD16 *pi2_src,
             for(i = 0; i < NTAPS_LUMA; i++)
                 i4_tmp += pi1_coeff[i] * pi2_src[col + (i - 3) * src_strd];
 
-            i4_tmp = (i4_tmp >> SHIFT_14_MINUS_BIT_DEPTH) - OFFSET14;
+            i4_tmp = (i4_tmp >> FILTER_PREC) - OFFSET14;
 
             pi2_dst[col] = i4_tmp;
         }

@@ -78,6 +78,9 @@
 @* @param[in] wd
 @*  integer width of the array
 @*
+@* @param[in] bit_depth
+@*  bit depth of the pixels
+@*
 @* @returns
 @*
 @* @remarks
@@ -86,25 +89,28 @@
 @*******************************************************************************
 @*/
 
-@void ihevc_inter_pred_luma_vert_w16inp(word16 *pi2_src,
-@                                    uword8 *pu1_dst,
-@                                    word32 src_strd,
-@                                    word32 dst_strd,
-@                                    word8 *pi1_coeff,
-@                                    word32 ht,
-@                                    word32 wd   )
+@void ihevc_inter_pred_luma_vert_w16inp_w16out(word16 *pi2_src,
+@                                              word16 *pi2_dst,
+@                                              word32 src_strd,
+@                                              word32 dst_strd,
+@                                              word8 *pi1_coeff,
+@                                              word32 ht,
+@                                              word32 wd,
+@                                              uword8 bit_depth)
 @**************variables vs registers*****************************************
-@   r0 => *pu2_src
-@   r1 => *pu1_dst
+@   r0 => *pi2_src
+@   r1 => *pi2_dst
 @   r2 =>  src_strd
 @   r3 =>  dst_strd
-@   r4 => *pi1_coeff
-@   r5 =>  ht
-@   r6 =>  wd
+@   [sp, #coeff_offset] => *pi1_coeff
+@   [sp, #ht_offset]    =>  ht
+@   [sp, #wd_offset]    =>  wd
+@   [sp, #bit_depth_offset] => bit_depth
 
 .equ    coeff_offset,   104
 .equ    ht_offset,      108
 .equ    wd_offset,      112
+.equ    bit_depth_offset, 116
 
 .text
 .align 4

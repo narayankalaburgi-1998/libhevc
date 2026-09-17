@@ -35,7 +35,6 @@
 *  - ihevc_inter_pred_luma_horz_w16out()
 *  - ihevc_inter_pred_luma_vert_w16out()
 *  - ihevc_inter_pred_luma_vert_w16inp()
-*  - ihevc_inter_pred_luma_vert_w16inp_w16out()
 *  - ihevc_inter_pred_chroma_copy()
 *  - ihevc_inter_pred_chroma_horz()
 *  - ihevc_inter_pred_chroma_vert()
@@ -547,78 +546,6 @@ void ihevc_hbd_inter_pred_luma_vert_w16inp(WORD16 *pi2_src,
     }
 }
 
-
-/**
-*******************************************************************************
-*
-* @brief
-*      Luma prediction filter for vertical 16bit input & output
-*
-* @par Description:
-*    Applies a vertical filter with coefficients pointed to  by 'pi1_coeff' to
-*    the elements pointed by 'pu1_src' and  writes to the location pointed by
-*    'pu1_dst'  Input is 16 bits  The filter output is downshifted by 6 and
-*    8192 is  subtracted to store it as a 16 bit number  The output is used as
-*    a input to weighted prediction
-*
-* @param[in] pi2_src
-*  WORD16 pointer to the source
-*
-* @param[out] pi2_dst
-*  WORD16 pointer to the destination
-*
-* @param[in] src_strd
-*  integer source stride
-*
-* @param[in] dst_strd
-*  integer destination stride
-*
-* @param[in] pi1_coeff
-*  WORD8 pointer to the filter coefficients
-*
-* @param[in] ht
-*  integer height of the array
-*
-* @param[in] wd
-*  integer width of the array
-*
-* @returns
-*
-* @remarks
-*  None
-*
-*******************************************************************************
-*/
-
-
-void ihevc_hbd_inter_pred_luma_vert_w16inp_w16out(WORD16 *pi2_src,
-                                                  WORD16 *pi2_dst,
-                                                  WORD32 src_strd,
-                                                  WORD32 dst_strd,
-                                                  WORD8 *pi1_coeff,
-                                                  WORD32 ht,
-                                                  WORD32 wd,
-                                                  UWORD8 bit_depth)
-{
-    WORD32 row, col, i;
-    WORD32 tmp;
-
-    for(row = 0; row < ht; row++)
-    {
-        for(col = 0; col < wd; col++)
-        {
-            tmp = 0;
-            for(i = 0; i < NTAPS_LUMA; i++)
-                tmp += pi1_coeff[i] * pi2_src[col + (i - 3) * src_strd];
-            tmp = (tmp >> FILTER_PREC) - OFFSET14;
-
-            pi2_dst[col] = tmp;
-        }
-
-        pi2_src += src_strd;
-        pi2_dst += dst_strd;
-    }
-}
 
 
 

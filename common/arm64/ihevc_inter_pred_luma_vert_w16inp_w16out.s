@@ -78,6 +78,9 @@
 //* //param[in] wd
 //*  integer width of the array
 //*
+//* //param[in] bit_depth
+//*  bit depth of the pixels
+//*
 //* //returns
 //*
 //* //remarks
@@ -86,21 +89,23 @@
 //*******************************************************************************
 //*/
 
-//void ihevc_inter_pred_luma_vert_w16inp(word16 *pi2_src,
-//                                    uword8 *pu1_dst,
-//                                    word32 src_strd,
-//                                    word32 dst_strd,
-//                                    word8 *pi1_coeff,
-//                                    word32 ht,
-//                                    word32 wd   )
+//void ihevc_inter_pred_luma_vert_w16inp_w16out(word16 *pi2_src,
+//                                              word16 *pi2_dst,
+//                                              word32 src_strd,
+//                                              word32 dst_strd,
+//                                              word8 *pi1_coeff,
+//                                              word32 ht,
+//                                              word32 wd,
+//                                              uword8 bit_depth)
 //**************variables vs registers*****************************************
-//  r0 => *pu2_src
-//  r1 => *pu1_dst
-//  r2 =>  src_strd
-//  r3 =>  dst_strd
-//  r4 => *pi1_coeff
-//  r5 =>  ht
-//  r6 =>  wd
+//  x0 => *pi2_src
+//  x1 => *pi2_dst
+//  x2 =>  src_strd
+//  x3 =>  dst_strd
+//  x4 => *pi1_coeff
+//  x5 =>  ht
+//  x6 =>  wd
+//  x7 =>  bit_depth
 
 .include "ihevc_neon_macros.s"
 .text

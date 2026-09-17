@@ -66,7 +66,7 @@ typedef struct
     ihevc_inter_pred_ft *ihevc_inter_pred_luma_copy_fptr;
     ihevc_inter_pred_w16out_ft *ihevc_inter_pred_luma_copy_w16out_fptr;
     ihevc_inter_pred_w16out_ft *ihevc_inter_pred_luma_horz_w16out_fptr;
-    ihevc_inter_pred_w16inp_w16out_ft *ihevc_inter_pred_luma_vert_w16inp_w16out_fptr;
+    ihevc_inter_pred_luma_vert_w16inp_w16out_ft *ihevc_inter_pred_luma_vert_w16inp_w16out_fptr;
     ihevc_intra_pred_chroma_ref_substitution_ft *ihevc_intra_pred_chroma_ref_substitution_fptr;
     ihevc_intra_pred_luma_ref_substitution_ft *ihevc_intra_pred_luma_ref_substitution_fptr;
     ihevc_intra_pred_ref_filtering_ft *ihevc_intra_pred_ref_filtering_fptr;

@@ -96,7 +96,7 @@ typedef struct
     ihevc_inter_pred_ft *ihevc_inter_pred_luma_copy_fptr;
     ihevc_inter_pred_w16out_ft *ihevc_inter_pred_luma_copy_w16out_fptr;
     ihevc_inter_pred_w16out_ft *ihevc_inter_pred_luma_horz_w16out_fptr;
-    ihevc_inter_pred_w16inp_w16out_ft *ihevc_inter_pred_luma_vert_w16inp_w16out_fptr;
+    ihevc_inter_pred_luma_vert_w16inp_w16out_ft *ihevc_inter_pred_luma_vert_w16inp_w16out_fptr;
 
     ihevc_intra_pred_chroma_ref_substitution_ft *ihevc_intra_pred_chroma_ref_substitution_fptr;
     ihevc_intra_pred_luma_ref_substitution_ft *ihevc_intra_pred_luma_ref_substitution_fptr;
@@ -240,7 +240,6 @@ typedef struct
     ihevc_hbd_inter_pred_w16out_ft *ihevc_hbd_inter_pred_luma_copy_w16out_fptr;
     ihevc_hbd_inter_pred_w16out_ft *ihevc_hbd_inter_pred_luma_vert_w16out_fptr;
     ihevc_hbd_inter_pred_w16inp_ft *ihevc_hbd_inter_pred_luma_vert_w16inp_fptr;
-    ihevc_hbd_inter_pred_w16inp_w16out_ft *ihevc_hbd_inter_pred_luma_vert_w16inp_w16out_fptr;
 
     ihevc_hbd_inter_pred_ft *ihevc_hbd_inter_pred_chroma_copy_fptr;
     ihevc_hbd_inter_pred_ft *ihevc_hbd_inter_pred_chroma_vert_fptr;

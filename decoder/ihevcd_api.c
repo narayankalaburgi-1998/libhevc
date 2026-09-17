@@ -1103,7 +1103,7 @@ void ihevcd_update_function_ptr(codec_t *ps_codec)
     ps_codec->apf_hbd_inter_pred[7] = (pf_hbd_inter_pred)ps_codec->s_func_selector.ihevc_hbd_inter_pred_luma_horz_w16out_fptr;
     ps_codec->apf_hbd_inter_pred[8] = (pf_hbd_inter_pred)ps_codec->s_func_selector.ihevc_hbd_inter_pred_luma_horz_w16out_fptr;
     ps_codec->apf_hbd_inter_pred[9] = (pf_hbd_inter_pred)ps_codec->s_func_selector.ihevc_hbd_inter_pred_luma_vert_w16inp_fptr;
-    ps_codec->apf_hbd_inter_pred[10] = (pf_hbd_inter_pred)ps_codec->s_func_selector.ihevc_hbd_inter_pred_luma_vert_w16inp_w16out_fptr;
+    ps_codec->apf_hbd_inter_pred[10] = (pf_hbd_inter_pred)ps_codec->s_func_selector.ihevc_inter_pred_luma_vert_w16inp_w16out_fptr;
     ps_codec->apf_hbd_inter_pred[11] = NULL;
     ps_codec->apf_hbd_inter_pred[12] = (pf_hbd_inter_pred)ps_codec->s_func_selector.ihevc_hbd_inter_pred_chroma_copy_fptr;
     ps_codec->apf_hbd_inter_pred[13] = (pf_hbd_inter_pred)ps_codec->s_func_selector.ihevc_hbd_inter_pred_chroma_vert_fptr;

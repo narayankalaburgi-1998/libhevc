@@ -214,7 +214,8 @@ void ihevce_luma_interpolate_16bit_dxdy(
             dst_strd,
             &gai1_hevc_luma_filter_taps[dy][0],
             ht,
-            wd);
+            wd,
+            8);
     }
     else if(0 == dy)
     {

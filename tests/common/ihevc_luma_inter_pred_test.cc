@@ -83,6 +83,15 @@ protected:
         compare_output<dstType>(dst_buf_ref, dst_buf_tst, wd, ht, dst_strd));
   }
 
+  template <typename FuncPtr> void RunTest(FuncPtr func_ptr, UWORD8 bit_depth) {
+    (ref->*func_ptr)(pv_src, pv_dst_ref, src_strd, dst_strd, pi1_coeffs, ht,
+                     wd, bit_depth);
+    (tst->*func_ptr)(pv_src, pv_dst_tst, src_strd, dst_strd, pi1_coeffs, ht,
+                     wd, bit_depth);
+    ASSERT_NO_FATAL_FAILURE(
+        compare_output<dstType>(dst_buf_ref, dst_buf_tst, wd, ht, dst_strd));
+  }
+
   int wd, ht, src_strd_mul, dst_strd_mul, coeff_idx;
   int src_strd, dst_strd;
   std::vector<dstType> dst_buf_ref;
@@ -136,7 +145,9 @@ TEST_P(LumaInterPred_16_16_Test, LumaVertTest) {
   GTEST_SKIP() << "SSE4.2 and SSSE3 are not matching C implementation for "
                   "ihevc_inter_pred_luma_vert_w16inp_w16out_fptr";
 #endif
-  RunTest(&ihevc_func_selector_t::ihevc_inter_pred_luma_vert_w16inp_w16out_fptr);
+  for (UWORD8 bit_depth : {8, 10, 12}) {
+    RunTest(&ihevc_func_selector_t::ihevc_inter_pred_luma_vert_w16inp_w16out_fptr, bit_depth);
+  }
 }
 
 auto kLumaInterPredTestParams =
