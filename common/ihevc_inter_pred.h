@@ -122,16 +122,6 @@ typedef void ihevc_hbd_inter_pred_w16inp_ft(
                 UWORD8 bit_depth);
 
 
-typedef void ihevc_hbd_inter_pred_w16inp_w16out_ft(
-                WORD16 *pi2_src,
-                WORD16 *pi2_dst,
-                WORD32 src_strd,
-                WORD32 dst_strd,
-                WORD8 *pi1_coeff,
-                WORD32 ht,
-                WORD32 wd,
-                UWORD8 bit_depth);
-
 typedef void ihevc_hbd_weighted_pred_uni_ft(
                 WORD16 *pi2_src,
                 UWORD16 *pu2_dst,
@@ -248,7 +238,6 @@ ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_luma_copy_w16out;
 ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_luma_horz_w16out;
 ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_luma_vert_w16out;
 ihevc_hbd_inter_pred_w16inp_ft ihevc_hbd_inter_pred_luma_vert_w16inp;
-ihevc_hbd_inter_pred_w16inp_w16out_ft ihevc_hbd_inter_pred_luma_vert_w16inp_w16out;
 ihevc_hbd_inter_pred_ft ihevc_hbd_inter_pred_chroma_copy;
 ihevc_hbd_inter_pred_ft ihevc_hbd_inter_pred_chroma_horz;
 ihevc_hbd_inter_pred_ft ihevc_hbd_inter_pred_chroma_vert;
@@ -256,7 +245,6 @@ ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_chroma_copy_w16out;
 ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_chroma_horz_w16out;
 ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_chroma_vert_w16out;
 ihevc_hbd_inter_pred_w16inp_ft ihevc_hbd_inter_pred_chroma_vert_w16inp;
-ihevc_hbd_inter_pred_w16inp_w16out_ft ihevc_hbd_inter_pred_chroma_vert_w16inp_w16out;
 ihevc_hbd_weighted_pred_uni_ft ihevc_hbd_weighted_pred_uni;
 ihevc_hbd_weighted_pred_bi_ft ihevc_hbd_weighted_pred_bi;
 ihevc_hbd_weighted_pred_bi_default_ft ihevc_hbd_weighted_pred_bi_default;
@@ -348,7 +336,6 @@ ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_luma_copy_w16out_sse42;
 ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_luma_horz_w16out_sse42;
 ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_luma_vert_w16out_sse42;
 ihevc_hbd_inter_pred_w16inp_ft ihevc_hbd_inter_pred_luma_vert_w16inp_sse42;
-ihevc_hbd_inter_pred_w16inp_w16out_ft ihevc_hbd_inter_pred_luma_vert_w16inp_w16out_sse42;
 
 ihevc_hbd_inter_pred_ft ihevc_hbd_inter_pred_chroma_copy_sse42;
 ihevc_hbd_inter_pred_ft ihevc_hbd_inter_pred_chroma_horz_sse42;
@@ -357,7 +344,6 @@ ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_chroma_copy_w16out_sse42;
 ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_chroma_horz_w16out_sse42;
 ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_chroma_vert_w16out_sse42;
 ihevc_hbd_inter_pred_w16inp_ft ihevc_hbd_inter_pred_chroma_vert_w16inp_sse42;
-ihevc_hbd_inter_pred_w16inp_w16out_ft ihevc_hbd_inter_pred_chroma_vert_w16inp_w16out_sse42;
 
 ihevc_hbd_weighted_pred_uni_ft ihevc_hbd_weighted_pred_uni_sse42;
 ihevc_hbd_weighted_pred_bi_ft ihevc_hbd_weighted_pred_bi_sse42;
@@ -392,7 +378,6 @@ ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_luma_copy_w16out_avx2;
 ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_luma_horz_w16out_avx2;
 ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_luma_vert_w16out_avx2;
 ihevc_hbd_inter_pred_w16inp_ft ihevc_hbd_inter_pred_luma_vert_w16inp_avx2;
-ihevc_hbd_inter_pred_w16inp_w16out_ft ihevc_hbd_inter_pred_luma_vert_w16inp_w16out_avx2;
 ihevc_hbd_inter_pred_ft ihevc_hbd_inter_pred_chroma_copy_avx2;
 ihevc_hbd_inter_pred_ft ihevc_hbd_inter_pred_chroma_horz_avx2;
 ihevc_hbd_inter_pred_ft ihevc_hbd_inter_pred_chroma_vert_avx2;
@@ -400,7 +385,6 @@ ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_chroma_copy_w16out_avx2;
 ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_chroma_horz_w16out_avx2;
 ihevc_hbd_inter_pred_w16out_ft ihevc_hbd_inter_pred_chroma_vert_w16out_avx2;
 ihevc_hbd_inter_pred_w16inp_ft ihevc_hbd_inter_pred_chroma_vert_w16inp_avx2;
-ihevc_hbd_inter_pred_w16inp_w16out_ft ihevc_hbd_inter_pred_chroma_vert_w16inp_w16out_avx2;
 #endif
 
 /* armv8 function declarations */

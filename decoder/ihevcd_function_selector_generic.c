@@ -232,7 +232,6 @@ void ihevcd_init_function_ptr_generic(func_selector_t *ps_func_selector)
     ps_func_selector->ihevc_hbd_inter_pred_luma_copy_w16out_fptr        = &ihevc_hbd_inter_pred_luma_copy_w16out;
     ps_func_selector->ihevc_hbd_inter_pred_luma_vert_w16out_fptr        = &ihevc_hbd_inter_pred_luma_vert_w16out;
     ps_func_selector->ihevc_hbd_inter_pred_luma_vert_w16inp_fptr        = &ihevc_hbd_inter_pred_luma_vert_w16inp;
-    ps_func_selector->ihevc_hbd_inter_pred_luma_vert_w16inp_w16out_fptr = &ihevc_hbd_inter_pred_luma_vert_w16inp_w16out;
 
     ps_func_selector->ihevc_hbd_inter_pred_chroma_copy_fptr             = &ihevc_hbd_inter_pred_chroma_copy;
     ps_func_selector->ihevc_hbd_inter_pred_chroma_vert_fptr             = &ihevc_hbd_inter_pred_chroma_vert;
@@ -241,7 +240,6 @@ void ihevcd_init_function_ptr_generic(func_selector_t *ps_func_selector)
     ps_func_selector->ihevc_hbd_inter_pred_chroma_copy_w16out_fptr      = &ihevc_hbd_inter_pred_chroma_copy_w16out;
     ps_func_selector->ihevc_hbd_inter_pred_chroma_vert_w16out_fptr      = &ihevc_hbd_inter_pred_chroma_vert_w16out;
     ps_func_selector->ihevc_hbd_inter_pred_chroma_vert_w16inp_fptr      = &ihevc_hbd_inter_pred_chroma_vert_w16inp;
-    ps_func_selector->ihevc_hbd_inter_pred_chroma_vert_w16inp_w16out_fptr = &ihevc_hbd_inter_pred_chroma_vert_w16inp_w16out;
     ps_func_selector->ihevc_hbd_weighted_pred_uni_fptr                  = &ihevc_hbd_weighted_pred_uni;
     ps_func_selector->ihevc_hbd_weighted_pred_bi_fptr                   = &ihevc_hbd_weighted_pred_bi;
     ps_func_selector->ihevc_hbd_weighted_pred_bi_default_fptr           = &ihevc_hbd_weighted_pred_bi_default;

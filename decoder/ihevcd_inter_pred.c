@@ -487,7 +487,10 @@ void ihevcd_inter_pred_ctb(process_ctxt_t *ps_proc)
                 func_wd = pu_wd >> (is_yuv444 ? 0 : clr_indx);
                 func_ht = pu_ht >> (is_yuv420 ? clr_indx : 0);
 
-                if (PIXEL_SIZE_1BYTE == pixel_size)
+                if ((PIXEL_SIZE_1BYTE == pixel_size) ||
+                    /* vert_w16inp_w16out filters (index 10 for luma, 21 for chroma) operate on
+                     * 16-bit intermediate buffers and are reused for HBD to leverage 8-bit SIMD/assembly */
+                    (func_indx2 == 10) || (func_indx2 == 21))
                 {
                     func_ptr2(func_src, func_dst, func_src_strd, func_dst_strd,
                               func_coeff, func_ht, func_wd);
@@ -565,7 +568,10 @@ void ihevcd_inter_pred_ctb(process_ctxt_t *ps_proc)
                 func_wd = pu_wd >> (is_yuv444 ? 0 : clr_indx);
                 func_ht = pu_ht >> (is_yuv420 ? clr_indx : 0);
 
-                if (PIXEL_SIZE_1BYTE == pixel_size)
+                if ((PIXEL_SIZE_1BYTE == pixel_size) ||
+                    /* vert_w16inp_w16out filters (index 10 for luma, 21 for chroma) operate on
+                     * 16-bit intermediate buffers and are reused for HBD to leverage 8-bit SIMD/assembly */
+                    (func_indx4 == 10) || (func_indx4 == 21))
                 {
                     func_ptr4(func_src, func_dst, func_src_strd, func_dst_strd,
                               func_coeff, func_ht, func_wd);
