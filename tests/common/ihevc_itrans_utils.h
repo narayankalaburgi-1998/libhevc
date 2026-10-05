@@ -32,6 +32,8 @@ extern "C" {
 #include "ihevc_recon.h"
 #include "ihevc_chroma_recon.h"
 #include "ihevc_function_selector.h"
+#include "ihevcd_itrans_recon_dc.h"
+#include "ihevcd_function_selector.h"
 #include "iv.h"
 }
 // clang-format on
@@ -64,6 +66,12 @@ using HbdITransReconFn = void (*)(WORD16* pi2_src, WORD16* pi2_tmp,
                                   WORD32 dst_strd, WORD32 zero_cols,
                                   WORD32 zero_rows, UWORD8 bit_depth);
 
+using HbdChromaITransReconFn =
+    void (*)(WORD16* pi2_src, WORD16* pi2_tmp, UWORD16* pu2_pred,
+             UWORD16* pu2_dst, WORD32 src_strd, WORD32 pred_strd,
+             WORD32 dst_strd, WORD32 zero_cols, WORD32 zero_rows,
+             UWORD8 bit_depth);
+
 using ReconFn = void (*)(WORD16* pi2_src, UWORD8* pu1_pred, UWORD8* pu1_dst,
                          WORD32 src_strd, WORD32 pred_strd, WORD32 dst_strd,
                          WORD32 zero_cols);
@@ -72,6 +80,9 @@ using ChromaReconFn = void (*)(WORD16* pi2_src, UWORD8* pu1_pred,
                                UWORD8* pu1_dst, WORD32 src_strd,
                                WORD32 pred_strd, WORD32 dst_strd,
                                WORD32 zero_cols);
+
+using HbdITransReconDcLumaFn = ihevcd_hbd_itrans_recon_dc_luma_ft*;
+using HbdITransReconDcChromaFn = ihevcd_hbd_itrans_recon_dc_chroma_ft*;
 
 ITransFn GetITransFn(const ihevc_func_selector_t* selector, int trans_size,
                      int ttype);
@@ -82,6 +93,16 @@ ITransReconFn GetITransReconFn(const ihevc_func_selector_t* selector,
 ChromaITransReconFn GetChromaITransReconFn(
     const ihevc_func_selector_t* selector, int trans_size);
 HbdITransReconFn GetHbdITransReconFn(IV_ARCH_T arch, int trans_size, int ttype);
+HbdChromaITransReconFn GetHbdChromaITransReconFn(
+    const ihevc_func_selector_t* selector, int trans_size);
+HbdChromaITransReconFn GetHbdChromaITransReconFn(IV_ARCH_T arch,
+                                                 int trans_size);
+HbdITransReconDcLumaFn GetHbdITransReconDcLumaFn(
+    const func_selector_t* selector);
+HbdITransReconDcLumaFn GetHbdITransReconDcLumaFn(IV_ARCH_T arch);
+HbdITransReconDcChromaFn GetHbdITransReconDcChromaFn(
+    const func_selector_t* selector);
+HbdITransReconDcChromaFn GetHbdITransReconDcChromaFn(IV_ARCH_T arch);
 ReconFn GetReconFn(const ihevc_func_selector_t* selector, int trans_size,
                    int ttype);
 ChromaReconFn GetChromaReconFn(const ihevc_func_selector_t* selector,
@@ -106,6 +127,14 @@ struct ITransBenchConfig {
   int ttype;          // 0: DCT, 1: DST (4x4 only)
   int non_zero_cols;  // non-zero width
   int non_zero_rows;  // non-zero height
+  IV_ARCH_T arch;
+  int bit_depth = 8;
+};
+
+// Benchmark configuration for DC inverse transform & reconstruction tests
+struct ItransReconDcBenchConfig {
+  int trans_size;
+  WORD16 coeff_value;
   IV_ARCH_T arch;
   int bit_depth = 8;
 };

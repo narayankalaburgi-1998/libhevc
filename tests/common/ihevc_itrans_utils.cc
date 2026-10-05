@@ -22,6 +22,8 @@
 #include <string>
 #include <vector>
 
+#include "func_selector.h"
+
 extern "C" {
 #include "ihevc_defs.h"
 #include "ihevc_resi_trans.h"
@@ -72,6 +74,73 @@ void GenerateITransCoeffs(int trans_size, int ttype, int nz_cols, int nz_rows,
   // Compute row/col zero bitmasks
   *zero_cols = ComputeZeroMask(trans_size, nz_cols);
   *zero_rows = ComputeZeroMask(trans_size, nz_rows);
+}
+
+#if defined(__x86_64__) || defined(_M_X64) || defined(__i386) || \
+    defined(_M_IX86)
+const func_selector_t dec_test_ssse3 = []() {
+  func_selector_t ret = {};
+  ihevcd_init_function_ptr_ssse3(&ret);
+  return ret;
+}();
+
+const func_selector_t dec_test_sse42 = []() {
+  func_selector_t ret = {};
+  ihevcd_init_function_ptr_sse42(&ret);
+  return ret;
+}();
+#elif defined(__aarch64__)
+const func_selector_t dec_test_arm64 = []() {
+  func_selector_t ret = {};
+#ifdef DARWIN
+  ihevcd_init_function_ptr_generic(&ret);
+#else
+  ihevcd_init_function_ptr_av8(&ret);
+#endif
+  return ret;
+}();
+#elif defined(__arm__)
+const func_selector_t dec_test_arm32 = []() {
+  func_selector_t ret = {};
+#ifdef DARWIN
+  ihevcd_init_function_ptr_generic(&ret);
+#else
+  ihevcd_init_function_ptr_a9q(&ret);
+#endif
+  return ret;
+}();
+#endif
+
+const func_selector_t dec_ref = []() {
+  func_selector_t ret = {};
+  ihevcd_init_function_ptr_generic(&ret);
+  return ret;
+}();
+
+const func_selector_t* GetDecoderFuncPtr(IV_ARCH_T arch) {
+  switch (arch) {
+    case ARCH_NA:
+      return &dec_ref;
+#if defined(__x86_64__) || defined(_M_X64) || defined(__i386) || \
+    defined(_M_IX86)
+    case ARCH_X86_SSSE3:
+      return &dec_test_ssse3;
+    case ARCH_X86_SSE42:
+      return &dec_test_sse42;
+#elif defined(__aarch64__)
+    case ARCH_ARMV8_GENERIC:
+      return &dec_test_arm64;
+#elif defined(__arm__)
+    case ARCH_ARM_A9Q:
+    case ARCH_ARM_A7:
+    case ARCH_ARM_A5:
+    case ARCH_ARM_A15:
+    case ARCH_ARM_NEONINTR:
+      return &dec_test_arm32;
+#endif
+    default:
+      return nullptr;
+  }
 }
 
 }  // namespace
@@ -141,6 +210,20 @@ ChromaITransReconFn GetChromaITransReconFn(
 
 HbdITransReconFn GetHbdITransReconFn(IV_ARCH_T arch, int trans_size,
                                      int ttype) {
+  const ihevc_func_selector_t* selector = get_func_ptr(arch);
+  if (selector) {
+    if (trans_size == 4) {
+      return (ttype == 1) ? selector->ihevc_hbd_itrans_recon_4x4_ttype1_fptr
+                          : selector->ihevc_hbd_itrans_recon_4x4_fptr;
+    } else if (trans_size == 8) {
+      return selector->ihevc_hbd_itrans_recon_8x8_fptr;
+    } else if (trans_size == 16) {
+      return selector->ihevc_hbd_itrans_recon_16x16_fptr;
+    } else if (trans_size == 32) {
+      return selector->ihevc_hbd_itrans_recon_32x32_fptr;
+    }
+  }
+
   if (arch == ARCH_NA) {
     if (trans_size == 4) {
       return (ttype == 1) ? ihevc_hbd_itrans_recon_4x4_ttype1
@@ -152,6 +235,81 @@ HbdITransReconFn GetHbdITransReconFn(IV_ARCH_T arch, int trans_size,
     } else if (trans_size == 32) {
       return ihevc_hbd_itrans_recon_32x32;
     }
+  }
+  return nullptr;
+}
+
+HbdChromaITransReconFn GetHbdChromaITransReconFn(
+    const ihevc_func_selector_t* selector, int trans_size) {
+  if (!selector) return nullptr;
+  if (trans_size == 4) {
+    return selector->ihevc_hbd_chroma_itrans_recon_4x4_fptr;
+  } else if (trans_size == 8) {
+    return selector->ihevc_hbd_chroma_itrans_recon_8x8_fptr;
+  } else if (trans_size == 16) {
+    return selector->ihevc_hbd_chroma_itrans_recon_16x16_fptr;
+  } else if (trans_size == 32) {
+    return selector->ihevc_hbd_chroma_itrans_recon_32x32_fptr;
+  }
+  return nullptr;
+}
+
+HbdChromaITransReconFn GetHbdChromaITransReconFn(IV_ARCH_T arch,
+                                                 int trans_size) {
+  const ihevc_func_selector_t* selector = get_func_ptr(arch);
+  if (selector) {
+    HbdChromaITransReconFn fn = GetHbdChromaITransReconFn(selector, trans_size);
+    if (fn) return fn;
+  }
+
+  if (arch == ARCH_NA) {
+    if (trans_size == 4) {
+      return ihevc_hbd_chroma_itrans_recon_4x4;
+    } else if (trans_size == 8) {
+      return ihevc_hbd_chroma_itrans_recon_8x8;
+    } else if (trans_size == 16) {
+      return ihevc_hbd_chroma_itrans_recon_16x16;
+    } else if (trans_size == 32) {
+      return ihevc_hbd_chroma_itrans_recon_32x32;
+    }
+  }
+  return nullptr;
+}
+
+HbdITransReconDcLumaFn GetHbdITransReconDcLumaFn(
+    const func_selector_t* selector) {
+  if (!selector) return nullptr;
+  return selector->ihevcd_hbd_itrans_recon_dc_luma_fptr;
+}
+
+HbdITransReconDcLumaFn GetHbdITransReconDcLumaFn(IV_ARCH_T arch) {
+  const func_selector_t* selector = GetDecoderFuncPtr(arch);
+  if (selector) {
+    HbdITransReconDcLumaFn fn = GetHbdITransReconDcLumaFn(selector);
+    if (fn) return fn;
+  }
+
+  if (arch == ARCH_NA) {
+    return ihevcd_hbd_itrans_recon_dc_luma;
+  }
+  return nullptr;
+}
+
+HbdITransReconDcChromaFn GetHbdITransReconDcChromaFn(
+    const func_selector_t* selector) {
+  if (!selector) return nullptr;
+  return selector->ihevcd_hbd_itrans_recon_dc_chroma_fptr;
+}
+
+HbdITransReconDcChromaFn GetHbdITransReconDcChromaFn(IV_ARCH_T arch) {
+  const func_selector_t* selector = GetDecoderFuncPtr(arch);
+  if (selector) {
+    HbdITransReconDcChromaFn fn = GetHbdITransReconDcChromaFn(selector);
+    if (fn) return fn;
+  }
+
+  if (arch == ARCH_NA) {
+    return ihevcd_hbd_itrans_recon_dc_chroma;
   }
   return nullptr;
 }

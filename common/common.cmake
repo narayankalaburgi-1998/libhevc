@@ -93,6 +93,14 @@ if("${SYSTEM_PROCESSOR}" STREQUAL "aarch64" OR "${SYSTEM_PROCESSOR}" STREQUAL "a
   list(
     APPEND
     LIBHEVC_COMMON_ASMS
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_itrans_recon_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_itrans_recon_8x8_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_itrans_recon_16x16_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_itrans_recon_32x32_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_chroma_itrans_recon_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_chroma_itrans_recon_8x8_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_chroma_itrans_recon_16x16_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_chroma_itrans_recon_32x32_neon_intr.c"
     "${HEVC_ROOT}/common/arm/ihevc_intra_pred_filters_neon_intr.c"
     "${HEVC_ROOT}/common/arm/ihevc_quant_iquant_ssd_neon_intr.c"
     "${HEVC_ROOT}/common/arm/ihevc_weighted_pred_neon_intr.c"
@@ -169,6 +177,14 @@ elseif("${SYSTEM_PROCESSOR}" STREQUAL "aarch32")
     APPEND
     LIBHEVC_COMMON_ASMS
     "${HEVC_ROOT}/common/arm/ihevc_cmn_utils_neon.h"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_itrans_recon_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_itrans_recon_8x8_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_itrans_recon_16x16_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_itrans_recon_32x32_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_chroma_itrans_recon_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_chroma_itrans_recon_8x8_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_chroma_itrans_recon_16x16_neon_intr.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_chroma_itrans_recon_32x32_neon_intr.c"
     "${HEVC_ROOT}/common/arm/ihevc_deblk_chroma_horz.s"
     "${HEVC_ROOT}/common/arm/ihevc_deblk_chroma_vert.s"
     "${HEVC_ROOT}/common/arm/ihevc_deblk_luma_horz.s"

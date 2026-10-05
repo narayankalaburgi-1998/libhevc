@@ -135,4 +135,13 @@ void ihevc_init_function_ptr_a9q(ihevc_func_selector_t *ps_func_selector)
     ps_func_selector->ihevc_sao_edge_offset_class2_chroma_fptr          =  &ihevc_sao_edge_offset_class2_chroma_a9q;
     ps_func_selector->ihevc_sao_edge_offset_class3_fptr                 =  &ihevc_sao_edge_offset_class3_a9q;
     ps_func_selector->ihevc_sao_edge_offset_class3_chroma_fptr          =  &ihevc_sao_edge_offset_class3_chroma_a9q;
+    ps_func_selector->ihevc_hbd_itrans_recon_4x4_ttype1_fptr            =  &ihevc_hbd_itrans_recon_4x4_ttype1_neonintr;
+    ps_func_selector->ihevc_hbd_itrans_recon_4x4_fptr                   =  &ihevc_hbd_itrans_recon_4x4_neonintr;
+    ps_func_selector->ihevc_hbd_itrans_recon_8x8_fptr                   =  &ihevc_hbd_itrans_recon_8x8_neonintr;
+    ps_func_selector->ihevc_hbd_itrans_recon_16x16_fptr                 =  &ihevc_hbd_itrans_recon_16x16_neonintr;
+    ps_func_selector->ihevc_hbd_itrans_recon_32x32_fptr                 =  &ihevc_hbd_itrans_recon_32x32_neonintr;
+    ps_func_selector->ihevc_hbd_chroma_itrans_recon_4x4_fptr            =  &ihevc_hbd_chroma_itrans_recon_4x4_neonintr;
+    ps_func_selector->ihevc_hbd_chroma_itrans_recon_8x8_fptr            =  &ihevc_hbd_chroma_itrans_recon_8x8_neonintr;
+    ps_func_selector->ihevc_hbd_chroma_itrans_recon_16x16_fptr          =  &ihevc_hbd_chroma_itrans_recon_16x16_neonintr;
+    ps_func_selector->ihevc_hbd_chroma_itrans_recon_32x32_fptr          =  &ihevc_hbd_chroma_itrans_recon_32x32_neonintr;
 }

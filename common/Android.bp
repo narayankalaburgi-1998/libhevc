@@ -89,6 +89,14 @@ cc_library_static {
             ],
 
             srcs: [
+                "arm/ihevc_hbd_itrans_recon_neon_intr.c",
+                "arm/ihevc_hbd_itrans_recon_8x8_neon_intr.c",
+                "arm/ihevc_hbd_itrans_recon_16x16_neon_intr.c",
+                "arm/ihevc_hbd_itrans_recon_32x32_neon_intr.c",
+                "arm/ihevc_hbd_chroma_itrans_recon_neon_intr.c",
+                "arm/ihevc_hbd_chroma_itrans_recon_8x8_neon_intr.c",
+                "arm/ihevc_hbd_chroma_itrans_recon_16x16_neon_intr.c",
+                "arm/ihevc_hbd_chroma_itrans_recon_32x32_neon_intr.c",
                 "arm/ihevc_intra_pred_filters_neon_intr.c",
                 "arm/ihevc_weighted_pred_neon_intr.c",
                 "arm64/ihevc_deblk_chroma_horz.s",
@@ -161,6 +169,14 @@ cc_library_static {
             ],
 
             srcs: [
+                "arm/ihevc_hbd_itrans_recon_neon_intr.c",
+                "arm/ihevc_hbd_itrans_recon_8x8_neon_intr.c",
+                "arm/ihevc_hbd_itrans_recon_16x16_neon_intr.c",
+                "arm/ihevc_hbd_itrans_recon_32x32_neon_intr.c",
+                "arm/ihevc_hbd_chroma_itrans_recon_neon_intr.c",
+                "arm/ihevc_hbd_chroma_itrans_recon_8x8_neon_intr.c",
+                "arm/ihevc_hbd_chroma_itrans_recon_16x16_neon_intr.c",
+                "arm/ihevc_hbd_chroma_itrans_recon_32x32_neon_intr.c",
                 "arm/ihevc_deblk_chroma_horz.s",
                 "arm/ihevc_deblk_chroma_vert.s",
                 "arm/ihevc_deblk_luma_horz.s",

@@ -53,10 +53,17 @@ cc_library_static {
         "RawFile.cpp",
     ],
     export_include_dirs: ["."],
+    header_libs: [
+        "libhevcdec_headers",
+    ],
+    export_header_lib_headers: [
+        "libhevcdec_headers",
+    ],
     shared_libs: [
         "libcrypto",
     ],
     static_libs: [
+        "libhevcdec",
         "libhevccommon",
         "libgtest",
     ],
@@ -316,6 +323,21 @@ cc_benchmark {
     name: "ihevc_chroma_itrans_recon_benchmark",
     defaults: ["libhevc_benchmarks_defaults"],
     srcs: ["ihevc_chroma_itrans_recon_benchmark.cc"],
+}
+
+cc_benchmark {
+    name: "ihevc_hbd_chroma_itrans_recon_benchmark",
+    defaults: ["libhevc_benchmarks_defaults"],
+    srcs: ["ihevc_hbd_chroma_itrans_recon_benchmark.cc"],
+}
+
+cc_benchmark {
+    name: "ihevcd_hbd_itrans_recon_dc_benchmark",
+    defaults: ["libhevc_benchmarks_defaults"],
+    srcs: ["ihevcd_hbd_itrans_recon_dc_benchmark.cc"],
+    static_libs: [
+        "libhevcdec",
+    ],
 }
 
 cc_benchmark {

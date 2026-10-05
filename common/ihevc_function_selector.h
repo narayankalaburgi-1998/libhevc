@@ -155,6 +155,17 @@ typedef struct
     ihevc_sao_edge_offset_class2_chroma_ft *ihevc_sao_edge_offset_class2_chroma_fptr;
     ihevc_sao_edge_offset_class3_ft *ihevc_sao_edge_offset_class3_fptr;
     ihevc_sao_edge_offset_class3_chroma_ft *ihevc_sao_edge_offset_class3_chroma_fptr;
+
+    /* HBD functions for IT-recon */
+    ihevc_hbd_itrans_recon_4x4_ttype1_ft *ihevc_hbd_itrans_recon_4x4_ttype1_fptr;
+    ihevc_hbd_itrans_recon_4x4_ft *ihevc_hbd_itrans_recon_4x4_fptr;
+    ihevc_hbd_itrans_recon_8x8_ft *ihevc_hbd_itrans_recon_8x8_fptr;
+    ihevc_hbd_itrans_recon_16x16_ft *ihevc_hbd_itrans_recon_16x16_fptr;
+    ihevc_hbd_itrans_recon_32x32_ft *ihevc_hbd_itrans_recon_32x32_fptr;
+    ihevc_hbd_chroma_itrans_recon_4x4_ft *ihevc_hbd_chroma_itrans_recon_4x4_fptr;
+    ihevc_hbd_chroma_itrans_recon_8x8_ft *ihevc_hbd_chroma_itrans_recon_8x8_fptr;
+    ihevc_hbd_chroma_itrans_recon_16x16_ft *ihevc_hbd_chroma_itrans_recon_16x16_fptr;
+    ihevc_hbd_chroma_itrans_recon_32x32_ft *ihevc_hbd_chroma_itrans_recon_32x32_fptr;
 }ihevc_func_selector_t;
 
 
