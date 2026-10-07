@@ -141,6 +141,20 @@ ihevc_hbd_inter_pred_ft* GetHbdLumaInterPredFn(IV_ARCH_T arch, InterPredOp op) {
         return nullptr;
     }
   }
+#if defined(ENABLE_NEON)
+  if (arch == ARCH_ARMV8_GENERIC || arch == ARCH_ARM_A9Q) {
+    switch (op) {
+      case InterPredOp::kCopy:
+        return ihevc_hbd_inter_pred_luma_copy_neonintr;
+      case InterPredOp::kHorz:
+        return ihevc_hbd_inter_pred_luma_horz_neonintr;
+      case InterPredOp::kVert:
+        return ihevc_hbd_inter_pred_luma_vert_neonintr;
+      default:
+        return nullptr;
+    }
+  }
+#endif
   return nullptr;
 }
 
@@ -158,6 +172,20 @@ ihevc_hbd_inter_pred_w16out_ft* GetHbdLumaInterPredW16outFn(IV_ARCH_T arch,
         return nullptr;
     }
   }
+#if defined(ENABLE_NEON)
+  if (arch == ARCH_ARMV8_GENERIC || arch == ARCH_ARM_A9Q) {
+    switch (op) {
+      case InterPredOp::kCopyW16out:
+        return ihevc_hbd_inter_pred_luma_copy_w16out_neonintr;
+      case InterPredOp::kHorzW16out:
+        return ihevc_hbd_inter_pred_luma_horz_w16out_neonintr;
+      case InterPredOp::kVertW16out:
+        return ihevc_hbd_inter_pred_luma_vert_w16out_neonintr;
+      default:
+        return nullptr;
+    }
+  }
+#endif
   return nullptr;
 }
 
@@ -168,6 +196,13 @@ ihevc_hbd_inter_pred_w16inp_ft* GetHbdLumaInterPredW16inpFn(IV_ARCH_T arch,
       return ihevc_hbd_inter_pred_luma_vert_w16inp;
     }
   }
+#if defined(ENABLE_NEON)
+  if (arch == ARCH_ARMV8_GENERIC || arch == ARCH_ARM_A9Q) {
+    if (op == InterPredOp::kVertW16inp) {
+      return ihevc_hbd_inter_pred_luma_vert_w16inp_neonintr;
+    }
+  }
+#endif
   return nullptr;
 }
 
@@ -178,6 +213,13 @@ ihevc_hbd_inter_pred_w16inp_w16out_ft* GetHbdLumaInterPredW16inpW16outFn(
       return ihevc_hbd_inter_pred_luma_vert_w16inp_w16out;
     }
   }
+#if defined(ENABLE_NEON)
+  if (arch == ARCH_ARMV8_GENERIC || arch == ARCH_ARM_A9Q) {
+    if (op == InterPredOp::kVertW16inpW16out) {
+      return ihevc_hbd_inter_pred_luma_vert_w16inp_w16out_neonintr;
+    }
+  }
+#endif
   return nullptr;
 }
 
@@ -195,6 +237,20 @@ ihevc_hbd_inter_pred_ft* GetHbdChromaInterPredFn(IV_ARCH_T arch,
         return nullptr;
     }
   }
+#if defined(ENABLE_NEON)
+  if (arch == ARCH_ARMV8_GENERIC || arch == ARCH_ARM_A9Q) {
+    switch (op) {
+      case InterPredOp::kCopy:
+        return ihevc_hbd_inter_pred_chroma_copy_neonintr;
+      case InterPredOp::kHorz:
+        return ihevc_hbd_inter_pred_chroma_horz_neonintr;
+      case InterPredOp::kVert:
+        return ihevc_hbd_inter_pred_chroma_vert_neonintr;
+      default:
+        return nullptr;
+    }
+  }
+#endif
   return nullptr;
 }
 
@@ -212,6 +268,20 @@ ihevc_hbd_inter_pred_w16out_ft* GetHbdChromaInterPredW16outFn(IV_ARCH_T arch,
         return nullptr;
     }
   }
+#if defined(ENABLE_NEON)
+  if (arch == ARCH_ARMV8_GENERIC || arch == ARCH_ARM_A9Q) {
+    switch (op) {
+      case InterPredOp::kCopyW16out:
+        return ihevc_hbd_inter_pred_chroma_copy_w16out_neonintr;
+      case InterPredOp::kHorzW16out:
+        return ihevc_hbd_inter_pred_chroma_horz_w16out_neonintr;
+      case InterPredOp::kVertW16out:
+        return ihevc_hbd_inter_pred_chroma_vert_w16out_neonintr;
+      default:
+        return nullptr;
+    }
+  }
+#endif
   return nullptr;
 }
 
@@ -222,6 +292,13 @@ ihevc_hbd_inter_pred_w16inp_ft* GetHbdChromaInterPredW16inpFn(IV_ARCH_T arch,
       return ihevc_hbd_inter_pred_chroma_vert_w16inp;
     }
   }
+#if defined(ENABLE_NEON)
+  if (arch == ARCH_ARMV8_GENERIC || arch == ARCH_ARM_A9Q) {
+    if (op == InterPredOp::kVertW16inp) {
+      return ihevc_hbd_inter_pred_chroma_vert_w16inp_neonintr;
+    }
+  }
+#endif
   return nullptr;
 }
 
@@ -232,6 +309,13 @@ ihevc_hbd_inter_pred_w16inp_w16out_ft* GetHbdChromaInterPredW16inpW16outFn(
       return ihevc_hbd_inter_pred_chroma_vert_w16inp_w16out;
     }
   }
+#if defined(ENABLE_NEON)
+  if (arch == ARCH_ARMV8_GENERIC || arch == ARCH_ARM_A9Q) {
+    if (op == InterPredOp::kVertW16inpW16out) {
+      return ihevc_hbd_inter_pred_chroma_vert_w16inp_w16out_neonintr;
+    }
+  }
+#endif
   return nullptr;
 }
 
