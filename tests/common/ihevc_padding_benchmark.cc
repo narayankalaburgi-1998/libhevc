@@ -46,6 +46,8 @@ enum class PadType {
   kRightLuma,
   kLeftChroma,
   kRightChroma,
+  kTop,
+  kBottom,
 };
 
 struct PaddingBenchConfig {
@@ -114,6 +116,16 @@ void BM_Padding(benchmark::State& state, PaddingBenchConfig config) {
       ref_fn = ref_sel->ihevc_pad_right_chroma_fptr;
       offset = src_offset + 2 * wd;
       break;
+    case PadType::kTop:
+      fn = selector->ihevc_pad_top_fptr;
+      ref_fn = ref_sel->ihevc_pad_top_fptr;
+      offset = src_offset;
+      break;
+    case PadType::kBottom:
+      fn = selector->ihevc_pad_bottom_fptr;
+      ref_fn = ref_sel->ihevc_pad_bottom_fptr;
+      offset = src_offset + ht * stride;
+      break;
   }
 
   if (!fn) {
@@ -121,12 +133,16 @@ void BM_Padding(benchmark::State& state, PaddingBenchConfig config) {
     return;
   }
 
+  const bool is_top_bottom =
+      (pad_type == PadType::kTop || pad_type == PadType::kBottom);
+  const int dim = is_top_bottom ? block_wd : ht;
+
   // Pre-measurement verification against reference
   if (arch != ARCH_NA && ref_fn) {
     auto ref_buf = buf;
     auto tst_buf = buf;
-    ref_fn(ref_buf.data() + offset, stride, ht, pad_size);
-    fn(tst_buf.data() + offset, stride, ht, pad_size);
+    ref_fn(ref_buf.data() + offset, stride, dim, pad_size);
+    fn(tst_buf.data() + offset, stride, dim, pad_size);
     if (ref_buf != tst_buf) {
       state.SkipWithError("Output mismatch between SIMD and C reference");
       return;
@@ -134,13 +150,116 @@ void BM_Padding(benchmark::State& state, PaddingBenchConfig config) {
   }
 
   for (auto _ : state) {
-    fn(buf.data() + offset, stride, ht, pad_size);
+    fn(buf.data() + offset, stride, dim, pad_size);
     benchmark::DoNotOptimize(buf.data());
     benchmark::ClobberMemory();
   }
 
-  state.SetItemsProcessed(state.iterations() * ht * pad_size);
-  state.SetBytesProcessed(state.iterations() * ht * pad_size * sizeof(UWORD8));
+  const int num_pixels = is_top_bottom ? (block_wd * pad_size) : (ht * pad_size);
+  state.SetItemsProcessed(state.iterations() * num_pixels);
+  state.SetBytesProcessed(state.iterations() * num_pixels * sizeof(UWORD8));
+}
+
+void BM_HbdPadding(benchmark::State& state, PaddingBenchConfig config) {
+  const int wd = config.wd;
+  const int ht = config.ht;
+  const int pad_size = config.pad_size;
+  const PadType pad_type = config.pad_type;
+  const IV_ARCH_T arch = config.arch;
+
+  const ihevc_func_selector_t* selector = get_func_ptr(arch);
+  if (!selector) {
+    state.SkipWithError("Architecture not supported on this platform");
+    return;
+  }
+
+  const bool is_chroma =
+      (pad_type == PadType::kLeftChroma || pad_type == PadType::kRightChroma);
+  const int block_wd = is_chroma ? (2 * wd) : wd;
+  const int stride = block_wd + 2 * pad_size + 32;
+  const int total_ht = ht + 2 * pad_size + 32;
+  const int src_offset = pad_size * stride + pad_size + 16;
+
+  std::vector<UWORD16> buf(stride * total_ht, 0x02AA);
+
+  std::mt19937 rng(42);
+  std::uniform_int_distribution<uint16_t> dist(0, 1023);
+  for (int r = 0; r < ht; ++r) {
+    for (int c = 0; c < block_wd; ++c) {
+      buf[src_offset + r * stride + c] = dist(rng);
+    }
+  }
+
+  using HbdPadFn = void (*)(UWORD16*, WORD32, WORD32, WORD32);
+  HbdPadFn fn = nullptr;
+  HbdPadFn ref_fn = nullptr;
+  int offset = src_offset;
+
+  const ihevc_func_selector_t* ref_sel = get_ref_func_ptr();
+
+  switch (pad_type) {
+    case PadType::kLeftLuma:
+      fn = selector->ihevc_hbd_pad_left_luma_fptr;
+      ref_fn = ref_sel->ihevc_hbd_pad_left_luma_fptr;
+      offset = src_offset;
+      break;
+    case PadType::kRightLuma:
+      fn = selector->ihevc_hbd_pad_right_luma_fptr;
+      ref_fn = ref_sel->ihevc_hbd_pad_right_luma_fptr;
+      offset = src_offset + wd;
+      break;
+    case PadType::kLeftChroma:
+      fn = selector->ihevc_hbd_pad_left_chroma_fptr;
+      ref_fn = ref_sel->ihevc_hbd_pad_left_chroma_fptr;
+      offset = src_offset;
+      break;
+    case PadType::kRightChroma:
+      fn = selector->ihevc_hbd_pad_right_chroma_fptr;
+      ref_fn = ref_sel->ihevc_hbd_pad_right_chroma_fptr;
+      offset = src_offset + 2 * wd;
+      break;
+    case PadType::kTop:
+      fn = selector->ihevc_hbd_pad_top_fptr;
+      ref_fn = ref_sel->ihevc_hbd_pad_top_fptr;
+      offset = src_offset;
+      break;
+    case PadType::kBottom:
+      fn = selector->ihevc_hbd_pad_bottom_fptr;
+      ref_fn = ref_sel->ihevc_hbd_pad_bottom_fptr;
+      offset = src_offset + ht * stride;
+      break;
+  }
+
+  if (!fn) {
+    state.SkipWithError("Target function pointer is null");
+    return;
+  }
+
+  const bool is_top_bottom =
+      (pad_type == PadType::kTop || pad_type == PadType::kBottom);
+  const int dim = is_top_bottom ? block_wd : ht;
+
+  // Pre-measurement verification against reference
+  if (arch != ARCH_NA && ref_fn) {
+    auto ref_buf = buf;
+    auto tst_buf = buf;
+    ref_fn(ref_buf.data() + offset, stride, dim, pad_size);
+    fn(tst_buf.data() + offset, stride, dim, pad_size);
+    if (ref_buf != tst_buf) {
+      state.SkipWithError("Output mismatch between SIMD and C reference");
+      return;
+    }
+  }
+
+  for (auto _ : state) {
+    fn(buf.data() + offset, stride, dim, pad_size);
+    benchmark::DoNotOptimize(buf.data());
+    benchmark::ClobberMemory();
+  }
+
+  const int num_pixels = is_top_bottom ? (block_wd * pad_size) : (ht * pad_size);
+  state.SetItemsProcessed(state.iterations() * num_pixels);
+  state.SetBytesProcessed(state.iterations() * num_pixels * sizeof(UWORD16));
 }
 
 }  // namespace
@@ -157,10 +276,13 @@ void RegisterAllBenchmarks() {
       {PadType::kRightLuma, "right_luma", false},
       {PadType::kLeftChroma, "left_chroma", true},
       {PadType::kRightChroma, "right_chroma", true},
+      {PadType::kTop, "top", false},
+      {PadType::kBottom, "bottom", false},
   };
 
-  const int pad_sizes[] = {80, 16};
+  const int pad_sizes[] = {80, 160};
 
+  // 8-bit Benchmarks
   for (const auto& op : ops) {
     const auto& sizes =
         op.is_chroma ? GetBenchmarkChromaPUSizes() : GetBenchmarkLumaPUSizes();
@@ -179,6 +301,31 @@ void RegisterAllBenchmarks() {
           benchmark::RegisterBenchmark(name.c_str(), [cfg](
                                                          benchmark::State& st) {
             BM_Padding(st, cfg);
+          })->Unit(benchmark::kNanosecond);
+        }
+      }
+    }
+  }
+
+  // HBD (16-bit) Benchmarks
+  for (const auto& op : ops) {
+    const auto& sizes =
+        op.is_chroma ? GetBenchmarkChromaPUSizes() : GetBenchmarkLumaPUSizes();
+    for (const auto& size : sizes) {
+      const int wd = size.first;
+      const int ht = size.second;
+      for (int pad_size : pad_sizes) {
+        for (auto arch : GetBenchmarkArchitectures()) {
+          std::string arch_name = GetArchName(arch);
+          std::string name = "BM_HbdPadding/" + std::string(op.name) + "/" +
+                             std::to_string(wd) + "x" + std::to_string(ht) +
+                             "/pad_" + std::to_string(pad_size) + "/" +
+                             arch_name;
+
+          PaddingBenchConfig cfg{wd, ht, pad_size, op.type, arch};
+          benchmark::RegisterBenchmark(name.c_str(), [cfg](
+                                                         benchmark::State& st) {
+            BM_HbdPadding(st, cfg);
           })->Unit(benchmark::kNanosecond);
         }
       }

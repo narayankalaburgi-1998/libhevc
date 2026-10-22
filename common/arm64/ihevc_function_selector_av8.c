@@ -119,6 +119,8 @@ void ihevc_init_function_ptr_av8(ihevc_func_selector_t *ps_func_selector)
     ps_func_selector->ihevc_pad_left_chroma_fptr                        =  &ihevc_pad_left_chroma_av8;
     ps_func_selector->ihevc_pad_right_luma_fptr                         =  &ihevc_pad_right_luma_av8;
     ps_func_selector->ihevc_pad_right_chroma_fptr                       =  &ihevc_pad_right_chroma_av8;
+    ps_func_selector->ihevc_pad_top_fptr                                =  &ihevc_pad_top;
+    ps_func_selector->ihevc_pad_bottom_fptr                             =  &ihevc_pad_bottom;
     ps_func_selector->ihevc_weighted_pred_bi_fptr                       =  &ihevc_weighted_pred_bi_av8;
     ps_func_selector->ihevc_weighted_pred_bi_default_fptr               =  &ihevc_weighted_pred_bi_default_av8;
     ps_func_selector->ihevc_weighted_pred_uni_fptr                      =  &ihevc_weighted_pred_uni_av8;
@@ -145,4 +147,10 @@ void ihevc_init_function_ptr_av8(ihevc_func_selector_t *ps_func_selector)
     ps_func_selector->ihevc_hbd_sao_edge_offset_class2_chroma_fptr      =  &ihevc_hbd_sao_edge_offset_class2_chroma_neonintr;
     ps_func_selector->ihevc_hbd_sao_edge_offset_class3_fptr             =  &ihevc_hbd_sao_edge_offset_class3_neonintr;
     ps_func_selector->ihevc_hbd_sao_edge_offset_class3_chroma_fptr      =  &ihevc_hbd_sao_edge_offset_class3_chroma_neonintr;
+    ps_func_selector->ihevc_hbd_pad_left_luma_fptr                      =  &ihevc_hbd_pad_left_luma_neonintr;
+    ps_func_selector->ihevc_hbd_pad_right_luma_fptr                     =  &ihevc_hbd_pad_right_luma_neonintr;
+    ps_func_selector->ihevc_hbd_pad_left_chroma_fptr                    =  &ihevc_hbd_pad_left_chroma_neonintr;
+    ps_func_selector->ihevc_hbd_pad_right_chroma_fptr                   =  &ihevc_hbd_pad_right_chroma_neonintr;
+    ps_func_selector->ihevc_hbd_pad_top_fptr                            =  &ihevc_hbd_pad_top_neonintr;
+    ps_func_selector->ihevc_hbd_pad_bottom_fptr                         =  &ihevc_hbd_pad_bottom_neonintr;
 }

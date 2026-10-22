@@ -91,6 +91,7 @@ cc_library_static {
 
             srcs: [
                 "arm/ihevc_hbd_sao_neon_intr.c",
+                "arm/ihevc_hbd_padding_neon_intr.c",
                 "arm/ihevc_intra_pred_filters_neon_intr.c",
                 "arm/ihevc_weighted_pred_neon_intr.c",
                 "arm64/ihevc_deblk_chroma_horz.s",
@@ -226,6 +227,7 @@ cc_library_static {
                 "arm/ihevc_weighted_pred_bi.s",
                 "arm/ihevc_weighted_pred_bi_default.s",
                 "arm/ihevc_weighted_pred_neon_intr.c",
+                "arm/ihevc_hbd_padding_neon_intr.c",
                 "arm/ihevc_weighted_pred_uni.s",
             ],
 

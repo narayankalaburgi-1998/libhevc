@@ -100,6 +100,7 @@ if("${SYSTEM_PROCESSOR}" STREQUAL "aarch64" OR "${SYSTEM_PROCESSOR}" STREQUAL "a
     "${HEVC_ROOT}/common/arm/ihevc_resi_trans_neon_32x32.c"
     "${HEVC_ROOT}/common/arm/ihevc_resi_trans_neon.c"
     "${HEVC_ROOT}/common/arm/ihevc_intra_ref_substitution_a9q.c"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_padding_neon_intr.c"
     "${HEVC_ROOT}/common/arm64/ihevc_deblk_chroma_horz.s"
     "${HEVC_ROOT}/common/arm64/ihevc_deblk_chroma_vert.s"
     "${HEVC_ROOT}/common/arm64/ihevc_deblk_luma_horz.s"
@@ -239,6 +240,7 @@ elseif("${SYSTEM_PROCESSOR}" STREQUAL "aarch32")
     "${HEVC_ROOT}/common/arm/ihevc_weighted_pred_bi.s"
     "${HEVC_ROOT}/common/arm/ihevc_weighted_pred_neon_intr.c"
     "${HEVC_ROOT}/common/arm/ihevc_weighted_pred_uni.s"
+    "${HEVC_ROOT}/common/arm/ihevc_hbd_padding_neon_intr.c"
     "${HEVC_ROOT}/common/arm/ihevc_function_selector_a9q.c")
 
   include_directories(${HEVC_ROOT}/common/arm)

@@ -119,6 +119,8 @@ void ihevc_init_function_ptr_sse42(ihevc_func_selector_t *ps_func_selector)
     ps_func_selector->ihevc_pad_left_chroma_fptr                        =  &ihevc_pad_left_chroma;
     ps_func_selector->ihevc_pad_right_luma_fptr                         =  &ihevc_pad_right_luma;
     ps_func_selector->ihevc_pad_right_chroma_fptr                       =  &ihevc_pad_right_chroma;
+    ps_func_selector->ihevc_pad_top_fptr                                =  &ihevc_pad_top;
+    ps_func_selector->ihevc_pad_bottom_fptr                             =  &ihevc_pad_bottom;
     ps_func_selector->ihevc_weighted_pred_bi_fptr                       =  &ihevc_weighted_pred_bi_sse42;
     ps_func_selector->ihevc_weighted_pred_bi_default_fptr               =  &ihevc_weighted_pred_bi_default_sse42;
     ps_func_selector->ihevc_weighted_pred_uni_fptr                      =  &ihevc_weighted_pred_uni_sse42;
@@ -145,4 +147,10 @@ void ihevc_init_function_ptr_sse42(ihevc_func_selector_t *ps_func_selector)
     ps_func_selector->ihevc_hbd_sao_edge_offset_class2_chroma_fptr      =  &ihevc_hbd_sao_edge_offset_class2_chroma_sse42;
     ps_func_selector->ihevc_hbd_sao_edge_offset_class3_fptr             =  &ihevc_hbd_sao_edge_offset_class3_sse42;
     ps_func_selector->ihevc_hbd_sao_edge_offset_class3_chroma_fptr      =  &ihevc_hbd_sao_edge_offset_class3_chroma_sse42;
+    ps_func_selector->ihevc_hbd_pad_left_luma_fptr                      =  &ihevc_hbd_pad_left_luma;
+    ps_func_selector->ihevc_hbd_pad_right_luma_fptr                     =  &ihevc_hbd_pad_right_luma;
+    ps_func_selector->ihevc_hbd_pad_left_chroma_fptr                    =  &ihevc_hbd_pad_left_chroma;
+    ps_func_selector->ihevc_hbd_pad_right_chroma_fptr                   =  &ihevc_hbd_pad_right_chroma;
+    ps_func_selector->ihevc_hbd_pad_top_fptr                            =  &ihevc_hbd_pad_top;
+    ps_func_selector->ihevc_hbd_pad_bottom_fptr                         =  &ihevc_hbd_pad_bottom;
 }
