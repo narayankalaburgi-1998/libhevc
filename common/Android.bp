@@ -91,6 +91,10 @@ cc_library_static {
 
             srcs: [
                 "arm/ihevc_hbd_deblk_neon_intr.c",
+                "arm/ihevc_chroma_itrans_recon_neon_intr.c",
+                "arm/ihevc_chroma_itrans_recon_8x8_neon_intr.c",
+                "arm/ihevc_chroma_itrans_recon_16x16_neon_intr.c",
+                "arm/ihevc_chroma_itrans_recon_32x32_neon_intr.c",
                 "arm/ihevc_hbd_sao_neon_intr.c",
                 "arm/ihevc_intra_pred_filters_neon_intr.c",
                 "arm/ihevc_weighted_pred_neon_intr.c",
@@ -170,6 +174,10 @@ cc_library_static {
                 "arm/ihevc_deblk_luma_horz.s",
                 "arm/ihevc_deblk_luma_vert.s",
                 "arm/ihevc_function_selector_a9q.c",
+                "arm/ihevc_chroma_itrans_recon_neon_intr.c",
+                "arm/ihevc_chroma_itrans_recon_8x8_neon_intr.c",
+                "arm/ihevc_chroma_itrans_recon_16x16_neon_intr.c",
+                "arm/ihevc_chroma_itrans_recon_32x32_neon_intr.c",
                 "arm/ihevc_hbd_sao_neon_intr.c",
                 "arm/ihevc_inter_pred_chroma_copy.s",
                 "arm/ihevc_inter_pred_chroma_copy_w16out.s",
