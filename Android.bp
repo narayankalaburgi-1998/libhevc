@@ -243,6 +243,7 @@ cc_library_static {
                 "decoder/arm64/ihevcd_function_selector_av8.c",
                 "decoder/arm64/ihevcd_itrans_recon_dc_chroma.s",
                 "decoder/arm64/ihevcd_itrans_recon_dc_luma.s",
+                "decoder/arm/ihevcd_hbd_fmt_conv_neon_intr.c",
                 "decoder/arm/ihevcd_hbd_itrans_recon_dc_neon_intr.c",
             ],
         },
@@ -339,6 +340,7 @@ cc_library_static {
                 "decoder/arm/ihevcd_function_selector_a9q.c",
                 "decoder/arm/ihevcd_itrans_recon_dc_chroma.s",
                 "decoder/arm/ihevcd_itrans_recon_dc_luma.s",
+                "decoder/arm/ihevcd_hbd_fmt_conv_neon_intr.c",
                 "decoder/arm/ihevcd_hbd_itrans_recon_dc_neon_intr.c",
             ],
 

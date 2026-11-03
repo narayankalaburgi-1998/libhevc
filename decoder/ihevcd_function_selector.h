@@ -171,6 +171,10 @@ typedef struct
     ihevcd_fmt_conv_420sp_to_420p_ft *ihevcd_fmt_conv_420sp_to_420p_fptr;
     ihevcd_fmt_conv_444sp_to_444p_ft *ihevcd_fmt_conv_444sp_to_444p_fptr;
     ihevcd_hbd_fmt_conv_420sp_to_420p_ft *ihevcd_hbd_fmt_conv_420sp_to_420p_fptr;
+    ihevcd_hbd_fmt_conv_422sp_to_420p_ft *ihevcd_hbd_fmt_conv_422sp_to_420p_fptr;
+    ihevcd_hbd_fmt_conv_422sp_to_422p_ft *ihevcd_hbd_fmt_conv_422sp_to_422p_fptr;
+    ihevcd_hbd_fmt_conv_444sp_to_420p_ft *ihevcd_hbd_fmt_conv_444sp_to_420p_fptr;
+    ihevcd_fmt_conv_hbd_444sp_to_444p_ft *ihevcd_fmt_conv_hbd_444sp_to_444p_fptr;
     ihevcd_itrans_recon_dc_luma_ft *ihevcd_itrans_recon_dc_luma_fptr;
     ihevcd_itrans_recon_dc_chroma_ft *ihevcd_itrans_recon_dc_chroma_fptr;
     ihevcd_hbd_itrans_recon_dc_luma_ft *ihevcd_hbd_itrans_recon_dc_luma_fptr;

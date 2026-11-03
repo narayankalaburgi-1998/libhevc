@@ -92,11 +92,75 @@ typedef void ihevcd_hbd_fmt_conv_420sp_to_420p_ft(UWORD16 *pu1_y_src,
                                                   WORD32 is_u_first,
                                                   WORD32 disable_luma_copy);
 
+typedef void ihevcd_hbd_fmt_conv_444sp_to_420p_ft(UWORD16 *pu1_y_src,
+                                                  UWORD16 *pu1_uv_src,
+                                                  UWORD16 *pu1_y_dst,
+                                                  UWORD16 *pu1_u_dst,
+                                                  UWORD16 *pu1_v_dst,
+                                                  WORD32 wd,
+                                                  WORD32 ht,
+                                                  WORD32 src_y_strd,
+                                                  WORD32 src_uv_strd,
+                                                  WORD32 dst_y_strd,
+                                                  WORD32 dst_uv_strd,
+                                                  WORD32 is_u_first,
+                                                  WORD32 disable_luma_copy);
+
+typedef void ihevcd_hbd_fmt_conv_422sp_to_420p_ft(UWORD16 *pu1_y_src,
+                                                  UWORD16 *pu1_uv_src,
+                                                  UWORD16 *pu1_y_dst,
+                                                  UWORD16 *pu1_u_dst,
+                                                  UWORD16 *pu1_v_dst,
+                                                  WORD32 wd,
+                                                  WORD32 ht,
+                                                  WORD32 src_y_strd,
+                                                  WORD32 src_uv_strd,
+                                                  WORD32 dst_y_strd,
+                                                  WORD32 dst_uv_strd,
+                                                  WORD32 is_u_first,
+                                                  WORD32 disable_luma_copy);
+
+typedef void ihevcd_hbd_fmt_conv_422sp_to_422p_ft(UWORD16 *pu1_y_src,
+                                                  UWORD16 *pu1_uv_src,
+                                                  UWORD16 *pu1_y_dst,
+                                                  UWORD16 *pu1_u_dst,
+                                                  UWORD16 *pu1_v_dst,
+                                                  WORD32 wd,
+                                                  WORD32 ht,
+                                                  WORD32 src_y_strd,
+                                                  WORD32 src_uv_strd,
+                                                  WORD32 dst_y_strd,
+                                                  WORD32 dst_uv_strd,
+                                                  WORD32 is_u_first,
+                                                  WORD32 disable_luma_copy);
+
+typedef void ihevcd_fmt_conv_hbd_444sp_to_444p_ft(UWORD16 *pu1_y_src,
+                                                  UWORD16 *pu1_uv_src,
+                                                  UWORD16 *pu1_y_dst,
+                                                  UWORD16 *pu1_u_dst,
+                                                  UWORD16 *pu1_v_dst,
+                                                  WORD32 wd,
+                                                  WORD32 ht,
+                                                  WORD32 src_y_strd,
+                                                  WORD32 src_uv_strd,
+                                                  WORD32 dst_y_strd,
+                                                  WORD32 dst_uv_strd);
+
 /* C function declarations */
 ihevcd_fmt_conv_420sp_to_420sp_ft ihevcd_fmt_conv_420sp_to_420sp;
 ihevcd_fmt_conv_420sp_to_420p_ft ihevcd_fmt_conv_420sp_to_420p;
 ihevcd_fmt_conv_444sp_to_444p_ft ihevcd_fmt_conv_444sp_to_444p;
 ihevcd_hbd_fmt_conv_420sp_to_420p_ft ihevcd_hbd_fmt_conv_420sp_to_420p;
+ihevcd_hbd_fmt_conv_422sp_to_420p_ft ihevcd_hbd_fmt_conv_422sp_to_420p;
+ihevcd_hbd_fmt_conv_422sp_to_422p_ft ihevcd_hbd_fmt_conv_422sp_to_422p;
+ihevcd_hbd_fmt_conv_444sp_to_420p_ft ihevcd_hbd_fmt_conv_444sp_to_420p;
+ihevcd_fmt_conv_hbd_444sp_to_444p_ft ihevcd_fmt_conv_hbd_444sp_to_444p;
+
+/* NEON function declarations */
+ihevcd_hbd_fmt_conv_422sp_to_420p_ft ihevcd_hbd_fmt_conv_422sp_to_420p_neonintr;
+ihevcd_hbd_fmt_conv_422sp_to_422p_ft ihevcd_hbd_fmt_conv_422sp_to_422p_neonintr;
+ihevcd_hbd_fmt_conv_444sp_to_420p_ft ihevcd_hbd_fmt_conv_444sp_to_420p_neonintr;
+ihevcd_fmt_conv_hbd_444sp_to_444p_ft ihevcd_fmt_conv_hbd_444sp_to_444p_neonintr;
 
 /* A9Q function declarations */
 ihevcd_fmt_conv_420sp_to_420sp_ft ihevcd_fmt_conv_420sp_to_420sp_a9q;
