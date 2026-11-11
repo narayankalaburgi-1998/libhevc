@@ -3843,8 +3843,15 @@ IHEVCD_ERROR_T ihevcd_parse_slice_data(codec_t *ps_codec)
                         volatile WORD32 proc_status = *(ps_codec->pu1_proc_map + ctb_indx) & 1;
 
                         if(parse_status == proc_status)
+                        {
                             ctb_indx++;
+                        }
+                        else
+                        {
+                            ithread_yield();
+                        }
                     }
+                    DATA_SYNC();
                     ps_codec->s_parse.i4_cur_slice_idx = parse_slice_idx;
                     break;
                 }

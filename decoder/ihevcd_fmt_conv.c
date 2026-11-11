@@ -1378,8 +1378,8 @@ IHEVCD_ERROR_T ihevcd_fmt_conv(codec_t *ps_codec,
         if((0 == ps_codec->i4_flush_mode) && (ps_codec->i4_disp_buf_id == ps_proc->i4_cur_pic_buf_id) && (1 < ps_codec->i4_num_cores))
         {
             WORD32 idx;
-            UWORD8 *pu1_buf;
-            WORD32 status;
+            volatile UWORD8 *pu1_buf;
+            volatile WORD32 status;
             WORD32 last_row = cur_row + num_rows;
             WORD32 last_ctb_y;
             UWORD32 ctb_in_row;
@@ -1402,11 +1402,12 @@ IHEVCD_ERROR_T ihevcd_fmt_conv(codec_t *ps_codec,
                 for(ctb_in_row = 0; (WORD32)ctb_in_row < ps_sps->i2_pic_wd_in_ctb; ctb_in_row++)
                 {
                     pu1_buf = (ps_codec->pu1_proc_map + idx + ctb_in_row);
-                    status &= *pu1_buf;
+                    status &= (*pu1_buf & 1);
                 }
 
                 if(status)
                 {
+                    DATA_SYNC();
                     break;
                 }
                 else
